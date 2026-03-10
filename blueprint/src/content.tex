@@ -1,7 +1,21 @@
-% In this file you should put the actual content of the blueprint.
-% It will be used both by the web and the print version.
-% It should *not* include the \begin{document}
-%
-% If you want to split the blueprint content into several files then
-% the current file can be a simple sequence of \input. Otherwise It
-% can start with a \section or \chapter for instance.
+\begin{abstract}
+This is a collection of autoformalizations of definitions and elementary lemmas associated
+with the Collatz Conjecture. The focus is first on facts needed to build up recent arguments
+by Rozier and Terracol\cite{rozier2025paradoxical}. Secondly, we attempt to be more complete
+regarding elementary lemmas to
+allow shorter proofs of more advanced theorems. The work is motivated by an urge to understand
+current research better, but also by the idea of a specialized library of autoformalizations,
+should the need arise for it.
+\end{abstract}
+
+\chapter{The $\lfloor\frac{3n}2\rfloor$ map}
+\section{Elementary Results}
+\input{sections/elementary}
+
+
+
+
+
+
+\chapter{Literature}
+\input{ref}
