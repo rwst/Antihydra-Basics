@@ -601,6 +601,25 @@ lemma isValidLoopStart_eq_P_Config_Pad (c : Config) (hm : isValidLoopStart c) :
 
 
 
+-- Helper lemmas for tm_simulates_math (sorry'd for now)
+
+-- Even case: from P_Config_Pad b (2*n+2) 0 p, reach P_Config_Pad (b+2) (3*n+5) 0 p'
+-- Uses tm_P_multistep to reduce a from 2*n+2 to 2, then handles the a=2 endgame
+theorem tm_even_full (b n p : Nat) :
+  ∃ k p', k > 0 ∧ run (P_Config_Pad b (2*n+2) 0 p) k = P_Config_Pad (b+2) (3*n+5) 0 p' := by
+  sorry
+
+-- Odd halt case: from P_Config_Pad 0 (2*n+3) 0 p, the machine halts
+theorem tm_odd_halt_ex (n p : Nat) :
+  ∃ k, k > 0 ∧ (run (P_Config_Pad 0 (2*n+3) 0 p) k).state = none := by
+  sorry
+
+-- Odd continue case: from P_Config_Pad (b'+1) (2*n+3) 0 p, reach P_Config_Pad b' (3*n+6) 0 p'
+-- Uses tm_P_multistep to reduce a from 2*n+3 to 3, then tm_odd_endgame
+theorem tm_odd_continue (b' n p : Nat) :
+  ∃ k p', k > 0 ∧ run (P_Config_Pad (b'+1) (2*n+3) 0 p) k = P_Config_Pad b' (3*n+6) 0 p' := by
+  sorry
+
 -- C. The Block-Step Lemma (The Core Theorem)
 theorem tm_simulates_math (c : Config) (hm : isValidLoopStart c) :
   ∃ (k : Nat), k > 0 ∧ (
@@ -611,51 +630,40 @@ theorem tm_simulates_math (c : Config) (hm : isValidLoopStart c) :
   have ⟨a, b, p, hc, ha⟩ := isValidLoopStart_eq_P_Config_Pad c hm
   subst hc
   simp only [decodeTape_P_Config_Pad]
-  have hd : (a : Int) / 2 ≥ 1 ↔ a ≥ 2 := by omega
-  have hge : a ≥ 2 := ha
   cases h_mod : a % 2
-  · have h_even : ∃ n, a = 2 * n + 2 := ⟨a / 2 - 1, by omega⟩
+  · -- Even case: a = 2*n+2
+    have h_even : ∃ n, a = 2 * n + 2 := ⟨a / 2 - 1, by omega⟩
     rcases h_even with ⟨n, hn⟩
     subst hn
-    use (2 * n + 5)
-    constructor
-    · omega
-    · have h_next : nextMathState { a := 2 * n + 2, b := b } = some { a := 3 * n + 5, b := b + 2 } := by
-        unfold nextMathState
-        have h1 : (2 * n + 2) % 2 = 0 := by omega
-        simp [h1]
-        omega
-      rw [h_next]
-      have he := tm_even_endgame b n p
-      rw [he]
-      exact ⟨isValidLoopStart_P_Config_Pad (b + 2) (3 * n + 5) p (by omega), rfl⟩
-  · have h_odd : ∃ n, a = 2 * n + 3 := ⟨a / 2 - 1, by omega⟩
+    have h_next : nextMathState { a := 2 * n + 2, b := b } = some { a := 3 * n + 5, b := b + 2 } := by
+      unfold nextMathState
+      have h1 : (2 * n + 2) % 2 = 0 := by omega
+      simp [h1]
+      omega
+    rw [h_next]
+    obtain ⟨k, p', hk, hrun⟩ := tm_even_full b n p
+    exact ⟨k, hk, by rw [hrun]; exact ⟨isValidLoopStart_P_Config_Pad (b + 2) (3 * n + 5) p' (by omega), by simp⟩⟩
+  · -- Odd case: a = 2*n+3
+    have h_odd : ∃ n, a = 2 * n + 3 := ⟨a / 2 - 1, by omega⟩
     rcases h_odd with ⟨n, hn⟩
     subst hn
     cases b with
     | zero =>
-      use (2 * n + 6)
-      constructor
-      · omega
-      · have h_next : nextMathState { a := 2 * n + 3, b := 0 } = none := by
-          unfold nextMathState
-          have h1 : (2 * n + 3) % 2 = 1 := by omega
-          simp [h1]
-        rw [h_next]
-        exact tm_odd_halt n p
+      have h_next : nextMathState { a := 2 * n + 3, b := 0 } = none := by
+        unfold nextMathState
+        have h1 : (2 * n + 3) % 2 = 1 := by omega
+        simp [h1]
+      rw [h_next]
+      exact tm_odd_halt_ex n p
     | succ b' =>
-      use (2 * n + b' + 15)
-      constructor
-      · omega
-      · have h_next : nextMathState { a := 2 * n + 3, b := b' + 1 } = some { a := n + 6, b := b' } := by
-          unfold nextMathState
-          have h1 : (2 * n + 3) % 2 = 1 := by omega
-          simp [h1]
-          omega
-        rw [h_next]
-        have ho := tm_odd_endgame b' n p
-        rw [ho]
-        exact ⟨isValidLoopStart_P_Config_Pad b' (n + 6) (p + 2) (by omega), rfl⟩
+      have h_next : nextMathState { a := 2 * n + 3, b := b' + 1 } = some { a := 3 * n + 6, b := b' } := by
+        unfold nextMathState
+        have h1 : (2 * n + 3) % 2 = 1 := by omega
+        simp [h1]
+        omega
+      rw [h_next]
+      obtain ⟨k, p', hk, hrun⟩ := tm_odd_continue b' n p
+      exact ⟨k, hk, by rw [hrun]; exact ⟨isValidLoopStart_P_Config_Pad b' (3 * n + 6) p' (by omega), by simp⟩⟩
 
 lemma run_none_state (c : Config) (h : c.state = none) (k : Nat) :
   (run c k).state = none := by
