@@ -601,24 +601,260 @@ lemma isValidLoopStart_eq_P_Config_Pad (c : Config) (hm : isValidLoopStart c) :
 
 
 
--- Helper lemmas for tm_simulates_math (sorry'd for now)
+-- Right-tape padding independence: two configs that differ only in trailing zeros behave the same
 
--- Even case: from P_Config_Pad b (2*n+2) 0 p, reach P_Config_Pad (b+2) (3*n+5) 0 p'
--- Uses tm_P_multistep to reduce a from 2*n+2 to 2, then handles the a=2 endgame
-theorem tm_even_full (b n p : Nat) :
-  ∃ k p', k > 0 ∧ run (P_Config_Pad b (2*n+2) 0 p) k = P_Config_Pad (b+2) (3*n+5) 0 p' := by
+/-- Two right tapes are equivalent if they agree at every index (with false as default). -/
+def RightPadEquiv (R1 R2 : List TapeSymbol) : Prop :=
+  ∀ i : Nat, R1.getD i false = R2.getD i false
+
+lemma headD'_eq_getD_zero (R : List TapeSymbol) :
+    headD' R false = R.getD 0 false := by
+  cases R with | nil => rfl | cons x xs => rfl
+
+lemma tailD'_getD (R : List TapeSymbol) (i : Nat) :
+    (tailD' R).getD i false = R.getD (i + 1) false := by
+  cases R with
+  | nil => simp [tailD', List.getD]
+  | cons x xs => simp [tailD', List.getD]
+
+lemma rightPadEquiv_headD' (R1 R2 : List TapeSymbol) (h : RightPadEquiv R1 R2) :
+    headD' R1 false = headD' R2 false := by
+  rw [headD'_eq_getD_zero, headD'_eq_getD_zero]; exact h 0
+
+lemma rightPadEquiv_tailD' (R1 R2 : List TapeSymbol) (h : RightPadEquiv R1 R2) :
+    RightPadEquiv (tailD' R1) (tailD' R2) := by
+  intro i; rw [tailD'_getD, tailD'_getD]; exact h (i + 1)
+
+lemma rightPadEquiv_cons (w : TapeSymbol) (R1 R2 : List TapeSymbol) (h : RightPadEquiv R1 R2) :
+    RightPadEquiv (w :: R1) (w :: R2) := by
+  intro i; cases i with | zero => rfl | succ i => simp [List.getD]; exact h i
+
+lemma step_rightPadEquiv (c1 c2 : Config)
+    (hs : c1.state = c2.state) (hl : c1.left = c2.left)
+    (hh : c1.head = c2.head) (hr : RightPadEquiv c1.right c2.right) :
+    (step c1).state = (step c2).state ∧
+    (step c1).left = (step c2).left ∧
+    (step c1).head = (step c2).head ∧
+    RightPadEquiv (step c1).right (step c2).right := by
+  rcases c1 with ⟨s, L, hd, R1⟩
+  rcases c2 with ⟨s2, L2, hd2, R2⟩
+  simp only at hs hl hh
+  subst hs; subst hl; subst hh
+  have hhead := rightPadEquiv_headD' _ _ hr
+  have htail := rightPadEquiv_tailD' _ _ hr
+  cases s with
+  | none => exact ⟨rfl, rfl, rfl, hr⟩
+  | some q =>
+    unfold step; dsimp only []
+    generalize transition q hd = tr
+    obtain ⟨q', w, d⟩ := tr
+    cases d with
+    | L => dsimp only []; exact ⟨rfl, rfl, rfl, rightPadEquiv_cons w R1 R2 hr⟩
+    | R => dsimp only []; exact ⟨rfl, rfl, hhead, htail⟩
+
+lemma run_rightPadEquiv (c1 c2 : Config) (k : Nat)
+    (hs : c1.state = c2.state) (hl : c1.left = c2.left)
+    (hh : c1.head = c2.head) (hr : RightPadEquiv c1.right c2.right) :
+    (run c1 k).state = (run c2 k).state ∧
+    (run c1 k).left = (run c2 k).left ∧
+    (run c1 k).head = (run c2 k).head ∧
+    RightPadEquiv (run c1 k).right (run c2 k).right := by
+  induction k generalizing c1 c2 with
+  | zero => exact ⟨hs, hl, hh, hr⟩
+  | succ k ih =>
+    simp only [run]
+    have h := step_rightPadEquiv c1 c2 hs hl hh hr
+    exact ih _ _ h.1 h.2.1 h.2.2.1 h.2.2.2
+
+lemma rightPadEquiv_append_repeatFalse (R : List TapeSymbol) (p q : Nat) :
+    RightPadEquiv (R ++ repeatFalse p) (R ++ repeatFalse q) := by
+  intro i
+  simp only [List.getD]
+  by_cases hi : i < R.length
+  · rw [List.getElem?_append_left (by omega), List.getElem?_append_left (by omega)]
+  · push_neg at hi
+    rw [List.getElem?_append_right (by omega), List.getElem?_append_right (by omega)]
+    simp [repeatFalse, List.getElem?_replicate]
+    split <;> split <;> simp_all <;> omega
+
+lemma rightPadEquiv_repeatFalse (p q : Nat) :
+    RightPadEquiv (repeatFalse p) (repeatFalse q) := by
+  have := rightPadEquiv_append_repeatFalse [] p q; simpa
+
+private lemma getD_false_of_all_false (R : List TapeSymbol) (h : R.all (!·) = true)
+    (i : Nat) : R.getD i false = false := by
+  induction R generalizing i with
+  | nil => simp [List.getD]
+  | cons x xs ih =>
+    cases i with
+    | zero =>
+      simp only [List.getD, List.getElem?_cons_zero, Option.getD_some]
+      simp only [List.all_cons, Bool.and_eq_true] at h
+      cases x <;> simp_all
+    | succ i =>
+      simp only [List.getD, List.getElem?_cons_succ]
+      simp only [List.all_cons, Bool.and_eq_true] at h
+      exact ih h.2 i
+
+private lemma all_false_of_getD_false (R : List TapeSymbol)
+    (h : ∀ i : Nat, R.getD i false = false) : R.all (!·) = true := by
+  induction R with
+  | nil => rfl
+  | cons x xs ih =>
+    simp only [List.all_cons, Bool.and_eq_true]
+    constructor
+    · have := h 0; simp only [List.getD, List.getElem?_cons_zero, Option.getD_some] at this
+      cases x <;> simp_all
+    · exact ih (fun i => by have := h (i + 1); simp only [List.getD, List.getElem?_cons_succ] at this; exact this)
+
+lemma rightPadEquiv_all_false {R1 R2 : List TapeSymbol}
+    (h : RightPadEquiv R1 R2) (h2 : R2.all (!·) = true) :
+    R1.all (!·) = true :=
+  all_false_of_getD_false R1 (fun i => by rw [h i]; exact getD_false_of_all_false R2 h2 i)
+
+-- Transfer lemmas for padding independence
+
+lemma isValidLoopStart_of_rightPadEquiv {c1 c2 : Config}
+    (hs : c1.state = c2.state) (hl : c1.left = c2.left)
+    (hh : c1.head = c2.head) (hr : RightPadEquiv c1.right c2.right)
+    (hv : isValidLoopStart c2) : isValidLoopStart c1 := by
+  unfold isValidLoopStart at hv ⊢
+  exact ⟨hs ▸ hv.1, hh ▸ hv.2.1, rightPadEquiv_all_false hr hv.2.2.1,
+    hl ▸ hv.2.2.2.1, hl ▸ hv.2.2.2.2⟩
+
+lemma decodeTape_of_left_eq {c1 c2 : Config} (hl : c1.left = c2.left) :
+    decodeTape c1 = decodeTape c2 := by
+  unfold decodeTape; rw [hl]
+
+-- New endgame lemmas (sorry'd -- require step-by-step TM proofs)
+
+-- Even endgame: from a=2 to valid loop start with a=N+5, b=b+2
+theorem tm_even_endgame_to_loop (b N p : Nat) :
+  run (P_Config_Pad b 2 N (p+2)) (3*N + 2*b + 26) = P_Config_Pad (b+2) (N+5) 0 p := by
   sorry
 
--- Odd halt case: from P_Config_Pad 0 (2*n+3) 0 p, the machine halts
+-- Odd halt endgame: from a=3, b=0, the machine halts
+theorem tm_odd_halt_endgame (N p : Nat) :
+  (run (P_Config_Pad 0 3 N (p+2)) (2*N + 12)).state = none := by
+  sorry
+
+-- Helper lemmas for tm_simulates_math
+
+-- Even case: the TM reaches a valid loop start with the correct decoded state
+theorem tm_even_full (b n p : Nat) :
+  ∃ k, k > 0 ∧ isValidLoopStart (run (P_Config_Pad b (2*n+2) 0 p) k) ∧
+    decodeTape (run (P_Config_Pad b (2*n+2) 0 p) k) = { a := 3 * n + 5, b := b + 2 } := by
+  -- Step 1: Define padded config with enough padding
+  set p' := p + n + 2
+  set k := n * (3 * n + 9) + (9 * n + 2 * b + 26)
+  -- Step 2: Show padded run gives P_Config_Pad (b+2) (3*n+5) 0 p via tm_P_multistep + even endgame
+  have h_multi : run (P_Config_Pad b (2*n+2) 0 p') (n * (3*n+9))
+      = P_Config_Pad b 2 (3*n) (p+2) := by
+    have h := tm_P_multistep b 0 0 (p+1) n
+    have h1 : 0 + 2 + 2 * n = 2 * n + 2 := by omega
+    have h2 : p + 1 + 1 + n = p' := by omega
+    have h3 : n * (2 * 0 + 3 * n + 9) = n * (3 * n + 9) := by ring
+    have h4 : 0 + 2 = 2 := by omega
+    have h5 : 0 + 3 * n = 3 * n := by omega
+    have h6 : p + 1 + 1 = p + 2 := by omega
+    rw [h1, h2, h3, h4, h5, h6] at h; exact h
+  have h_end : run (P_Config_Pad b 2 (3*n) (p+2)) (9*n + 2*b + 26)
+      = P_Config_Pad (b+2) (3*n+5) 0 p := by
+    have h := tm_even_endgame_to_loop b (3*n) p
+    have h1 : 3 * (3 * n) + 2 * b + 26 = 9 * n + 2 * b + 26 := by ring
+    have h2 : 3 * n + 5 = 3 * n + 5 := rfl
+    rw [h1] at h; exact h
+  have h_padded : run (P_Config_Pad b (2*n+2) 0 p') k
+      = P_Config_Pad (b+2) (3*n+5) 0 p := by
+    show run (P_Config_Pad b (2*n+2) 0 p') (n*(3*n+9) + (9*n+2*b+26)) = _
+    rw [run_add, h_multi, h_end]
+  -- Step 3: Transfer via padding independence
+  have h_equiv : RightPadEquiv (P_Config_Pad b (2*n+2) 0 p).right
+      (P_Config_Pad b (2*n+2) 0 p').right := by
+    simp only [P_Config_Pad]; exact rightPadEquiv_append_repeatFalse (repeatOne 0) p p'
+  have h_run := run_rightPadEquiv
+    (P_Config_Pad b (2*n+2) 0 p) (P_Config_Pad b (2*n+2) 0 p') k rfl rfl rfl h_equiv
+  rw [h_padded] at h_run
+  -- Step 4: Extract isValidLoopStart and decodeTape
+  use k
+  refine ⟨by omega, ?_, ?_⟩
+  · exact isValidLoopStart_of_rightPadEquiv h_run.1 h_run.2.1 h_run.2.2.1 h_run.2.2.2
+      (isValidLoopStart_P_Config_Pad (b+2) (3*n+5) p (by omega))
+  · rw [decodeTape_of_left_eq h_run.2.1]; simp
+
+-- Odd halt case: the TM halts
 theorem tm_odd_halt_ex (n p : Nat) :
   ∃ k, k > 0 ∧ (run (P_Config_Pad 0 (2*n+3) 0 p) k).state = none := by
-  sorry
+  set p' := p + n + 2
+  set k := n * (3 * n + 9) + (6 * n + 12)
+  -- Padded multistep
+  have h_multi : run (P_Config_Pad 0 (2*n+3) 0 p') (n * (3*n+9))
+      = P_Config_Pad 0 3 (3*n) (p+2) := by
+    have h := tm_P_multistep 0 1 0 (p+1) n
+    have h1 : 1 + 2 + 2 * n = 2 * n + 3 := by omega
+    have h2 : p + 1 + 1 + n = p' := by omega
+    have h3 : n * (2 * 0 + 3 * n + 9) = n * (3 * n + 9) := by ring
+    have h4 : 1 + 2 = 3 := by omega
+    have h5 : 0 + 3 * n = 3 * n := by omega
+    have h6 : p + 1 + 1 = p + 2 := by omega
+    rw [h1, h2, h3, h4, h5, h6] at h; exact h
+  -- Odd halt endgame
+  have h_end : (run (P_Config_Pad 0 3 (3*n) (p+2)) (6*n+12)).state = none := by
+    have h := tm_odd_halt_endgame (3*n) p
+    have h1 : 2 * (3 * n) + 12 = 6 * n + 12 := by ring
+    rw [h1] at h; exact h
+  -- Combine
+  have h_padded : (run (P_Config_Pad 0 (2*n+3) 0 p') k).state = none := by
+    show (run (P_Config_Pad 0 (2*n+3) 0 p') (n*(3*n+9) + (6*n+12))).state = none
+    rw [run_add, h_multi]; exact h_end
+  -- Transfer via padding independence
+  have h_equiv : RightPadEquiv (P_Config_Pad 0 (2*n+3) 0 p).right
+      (P_Config_Pad 0 (2*n+3) 0 p').right := by
+    simp only [P_Config_Pad]; exact rightPadEquiv_append_repeatFalse (repeatOne 0) p p'
+  have h_run := run_rightPadEquiv
+    (P_Config_Pad 0 (2*n+3) 0 p) (P_Config_Pad 0 (2*n+3) 0 p') k rfl rfl rfl h_equiv
+  exact ⟨k, by omega, h_run.1.symm ▸ h_padded⟩
 
--- Odd continue case: from P_Config_Pad (b'+1) (2*n+3) 0 p, reach P_Config_Pad b' (3*n+6) 0 p'
--- Uses tm_P_multistep to reduce a from 2*n+3 to 3, then tm_odd_endgame
+-- Odd continue case: the TM reaches a valid loop start with the correct decoded state
 theorem tm_odd_continue (b' n p : Nat) :
-  ∃ k p', k > 0 ∧ run (P_Config_Pad (b'+1) (2*n+3) 0 p) k = P_Config_Pad b' (3*n+6) 0 p' := by
-  sorry
+  ∃ k, k > 0 ∧ isValidLoopStart (run (P_Config_Pad (b'+1) (2*n+3) 0 p) k) ∧
+    decodeTape (run (P_Config_Pad (b'+1) (2*n+3) 0 p) k) = { a := 3 * n + 6, b := b' } := by
+  set p' := p + n + 2
+  set k := n * (3 * n + 9) + (9 * n + 20)
+  -- Padded multistep: reduce a from 2*n+3 to 3, accumulating 3*n ones on right
+  have h_multi : run (P_Config_Pad (b'+1) (2*n+3) 0 p') (n * (3*n+9))
+      = P_Config_Pad (b'+1) 3 (3*n) (p+2) := by
+    have h := tm_P_multistep (b'+1) 1 0 (p+1) n
+    have h1 : 1 + 2 + 2 * n = 2 * n + 3 := by omega
+    have h2 : p + 1 + 1 + n = p' := by omega
+    have h3 : n * (2 * 0 + 3 * n + 9) = n * (3 * n + 9) := by ring
+    have h4 : 1 + 2 = 3 := by omega
+    have h5 : 0 + 3 * n = 3 * n := by omega
+    have h6 : p + 1 + 1 = p + 2 := by omega
+    rw [h1, h2, h3, h4, h5, h6] at h; exact h
+  -- Odd endgame: P_Config_Pad (b'+1) 3 (3*n) (p+2) → P_Config_Pad b' (3*n+6) 0 p
+  have h_end : run (P_Config_Pad (b'+1) 3 (3*n) (p+2)) (9*n+20)
+      = P_Config_Pad b' (3*n+6) 0 p := by
+    have h := tm_odd_endgame b' (3*n) p
+    have h1 : 3 * (3 * n) + 20 = 9 * n + 20 := by ring
+    rw [h1] at h; exact h
+  -- Combine
+  have h_padded : run (P_Config_Pad (b'+1) (2*n+3) 0 p') k
+      = P_Config_Pad b' (3*n+6) 0 p := by
+    show run (P_Config_Pad (b'+1) (2*n+3) 0 p') (n*(3*n+9) + (9*n+20)) = _
+    rw [run_add, h_multi, h_end]
+  -- Transfer via padding independence
+  have h_equiv : RightPadEquiv (P_Config_Pad (b'+1) (2*n+3) 0 p).right
+      (P_Config_Pad (b'+1) (2*n+3) 0 p').right := by
+    simp only [P_Config_Pad]; exact rightPadEquiv_append_repeatFalse (repeatOne 0) p p'
+  have h_run := run_rightPadEquiv
+    (P_Config_Pad (b'+1) (2*n+3) 0 p) (P_Config_Pad (b'+1) (2*n+3) 0 p') k rfl rfl rfl h_equiv
+  rw [h_padded] at h_run
+  use k
+  refine ⟨by omega, ?_, ?_⟩
+  · exact isValidLoopStart_of_rightPadEquiv h_run.1 h_run.2.1 h_run.2.2.1 h_run.2.2.2
+      (isValidLoopStart_P_Config_Pad b' (3*n+6) p (by omega))
+  · rw [decodeTape_of_left_eq h_run.2.1]; simp
 
 -- C. The Block-Step Lemma (The Core Theorem)
 theorem tm_simulates_math (c : Config) (hm : isValidLoopStart c) :
@@ -641,8 +877,8 @@ theorem tm_simulates_math (c : Config) (hm : isValidLoopStart c) :
       simp [h1]
       omega
     rw [h_next]
-    obtain ⟨k, p', hk, hrun⟩ := tm_even_full b n p
-    exact ⟨k, hk, by rw [hrun]; exact ⟨isValidLoopStart_P_Config_Pad (b + 2) (3 * n + 5) p' (by omega), by simp⟩⟩
+    obtain ⟨k, hk, hvalid, hdecode⟩ := tm_even_full b n p
+    exact ⟨k, hk, hvalid, hdecode⟩
   · -- Odd case: a = 2*n+3
     have h_odd : ∃ n, a = 2 * n + 3 := ⟨a / 2 - 1, by omega⟩
     rcases h_odd with ⟨n, hn⟩
@@ -662,8 +898,8 @@ theorem tm_simulates_math (c : Config) (hm : isValidLoopStart c) :
         simp [h1]
         omega
       rw [h_next]
-      obtain ⟨k, p', hk, hrun⟩ := tm_odd_continue b' n p
-      exact ⟨k, hk, by rw [hrun]; exact ⟨isValidLoopStart_P_Config_Pad b' (3 * n + 6) p' (by omega), by simp⟩⟩
+      obtain ⟨k, hk, hvalid, hdecode⟩ := tm_odd_continue b' n p
+      exact ⟨k, hk, hvalid, hdecode⟩
 
 lemma run_none_state (c : Config) (h : c.state = none) (k : Nat) :
   (run c k).state = none := by
