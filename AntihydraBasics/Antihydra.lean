@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.List.Basic
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
 
 namespace Antihydra
 
@@ -206,13 +209,98 @@ lemma E_shift (k : Nat) (L R : List TapeSymbol) :
 -- Macro Loop Steps
 
 theorem tm_P_step (b m n p : Nat) : run (P_Config_Pad b (m+2+2) n (p+2)) (2*n + 12) = P_Config_Pad b (m+2) (n+3) (p+1) := by
-  rw [show 2*n + 12 = 1 + (1 + ((n+1) + (1 + (1 + ((n+2) + (1 + (1 + (1 + (1 + 1))))))))) by omega]
-  repeat (rw [run_add]; simp [run, step, transition, P_Config_Pad, headD', tailD', repeatOne, repeatFalse])
-  rw [A_shift]; simp
-  repeat (rw [run_add]; simp [run, step, transition, P_Config_Pad, headD', tailD', repeatOne, repeatFalse])
-  rw [C_shift]; simp
-  repeat (rw [run_add]; simp [run, step, transition, P_Config_Pad, headD', tailD', repeatOne, repeatFalse])
-  unfold P_Config_Pad; simp [repeatOne]
+  -- Step 1: E(m+2+2, n) -> state 5
+  rw [show 2*n + 12 = 1 + (2*n + 11) by omega, run_add]
+  have step1 : run (P_Config_Pad b (m+2+2) n (p+2)) 1 =
+    { state := some ⟨5, by decide⟩, head := true, left := repeatOne (m+2+1) ++ false :: repeatOne b, right := repeatOne (n+1) ++ repeatFalse (p+2) } := by
+    simp [run, step, transition, P_Config_Pad]
+  rw [step1]
+
+  -- Step 2: state 5 -> A(m+2+1, n)
+  rw [show 2*n + 11 = 1 + (2*n + 10) by omega, run_add]
+  have step2 : run { state := some ⟨5, by decide⟩, head := true, left := repeatOne (m+2+1) ++ false :: repeatOne b, right := repeatOne (n+1) ++ repeatFalse (p+2) } 1 =
+    { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne (m+2+1) ++ false :: repeatOne b, right := repeatOne n ++ repeatFalse (p+2) } := by
+    simp [run, step, transition]
+  rw [step2]
+
+  -- Step 3: A_shift (n+1 steps)
+  rw [show 2*n + 10 = (n+1) + (n+9) by omega, run_add]
+  have step3 : run { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne (m+2+1) ++ false :: repeatOne b, right := repeatOne n ++ repeatFalse (p+2) } (n+1) =
+    { state := some ⟨0, by decide⟩, head := false, left := repeatOne (n+1) ++ (false :: repeatOne (m+2+1) ++ false :: repeatOne b), right := repeatFalse (p+1) } := by
+    have hA := A_shift n (false :: repeatOne (m+2+1) ++ false :: repeatOne b) (repeatFalse (p+2))
+    have hp_head : headD' (repeatFalse (p+2)) false = false := rfl
+    have hp_tail : tailD' (repeatFalse (p+2)) = repeatFalse (p+1) := rfl
+    rw [hp_head, hp_tail] at hA
+    exact hA
+  rw [step3]
+
+  -- Step 4: A0 -> B1
+  rw [show n + 9 = 1 + (n + 8) by omega, run_add]
+  have step4 : run { state := some ⟨0, by decide⟩, head := false, left := repeatOne (n+1) ++ (false :: repeatOne (m+2+1) ++ false :: repeatOne b), right := repeatFalse (p+1) } 1 =
+    { state := some ⟨1, by decide⟩, head := false, left := true :: repeatOne (n+1) ++ (false :: repeatOne (m+2+1) ++ false :: repeatOne b), right := repeatFalse p } := by
+    simp [run, step, transition]
+  rw [step4]
+
+  -- Step 5: B0 -> C1
+  rw [show n + 8 = 1 + (n + 7) by omega, run_add]
+  have step5 : run { state := some ⟨1, by decide⟩, head := false, left := true :: repeatOne (n+1) ++ (false :: repeatOne (m+2+1) ++ false :: repeatOne b), right := repeatFalse p } 1 =
+    { state := some ⟨2, by decide⟩, head := true, left := repeatOne (n+1) ++ (false :: repeatOne (m+2+1) ++ false :: repeatOne b), right := false :: repeatFalse p } := by
+    simp [run, step, transition]
+  rw [step5]
+
+  -- Step 6: C1 shift (n+2 steps)
+  rw [show n + 7 = (n+2) + 5 by omega, run_add]
+  have step6 : run { state := some ⟨2, by decide⟩, head := true, left := repeatOne (n+1) ++ (false :: repeatOne (m+2+1) ++ false :: repeatOne b), right := false :: repeatFalse p } (n+2) =
+    { state := some ⟨2, by decide⟩, head := false, left := repeatOne (m+2+1) ++ false :: repeatOne b, right := repeatOne (n+2) ++ false :: repeatFalse p } := by
+    have hC := C_shift (n+1) (false :: repeatOne (m+2+1) ++ false :: repeatOne b) (false :: repeatFalse p)
+    have hC_head : headD' (false :: repeatOne (m+2+1) ++ false :: repeatOne b) false = false := rfl
+    have hC_tail : tailD' (false :: repeatOne (m+2+1) ++ false :: repeatOne b) = repeatOne (m+2+1) ++ false :: repeatOne b := rfl
+    rw [hC_head, hC_tail] at hC
+    exact hC
+  rw [step6]
+
+  -- Step 7: C0 -> D1
+  rw [show 5 = 1 + 4 by omega, run_add]
+  have step7 : run { state := some ⟨2, by decide⟩, head := false, left := repeatOne (m+2+1) ++ false :: repeatOne b, right := repeatOne (n+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨3, by decide⟩, head := true, left := repeatOne (m+2) ++ false :: repeatOne b, right := true :: repeatOne (n+2) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  rw [step7]
+
+  -- Step 8: D1 -> 1
+  rw [show 4 = 1 + 3 by omega, run_add]
+  have step8 : run { state := some ⟨3, by decide⟩, head := true, left := repeatOne (m+2) ++ false :: repeatOne b, right := true :: repeatOne (n+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨1, by decide⟩, head := headD' (repeatOne (m+2) ++ false :: repeatOne b) false, left := tailD' (repeatOne (m+2) ++ false :: repeatOne b), right := false :: true :: repeatOne (n+2) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  rw [step8]
+
+  -- Step 9: 1 -> 4
+  rw [show 3 = 1 + 2 by omega, run_add]
+  have step9 : run { state := some ⟨1, by decide⟩, head := headD' (repeatOne (m+2) ++ false :: repeatOne b) false, left := tailD' (repeatOne (m+2) ++ false :: repeatOne b), right := false :: true :: repeatOne (n+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨4, by decide⟩, head := true, left := tailD' (tailD' (repeatOne (m+2) ++ false :: repeatOne b)), right := true :: false :: true :: repeatOne (n+2) ++ false :: repeatFalse p } := by
+    -- m+2 >= 1, so head is true
+    have h_head : headD' (repeatOne (m+2) ++ false :: repeatOne b) false = true := rfl
+    rw [h_head]
+    simp [run, step, transition]
+  rw [step9]
+
+  -- Step 10: 4 -> 4 (Right)
+  rw [show 2 = 1 + 1 by omega, run_add]
+  have step10 : run { state := some ⟨4, by decide⟩, head := true, left := tailD' (tailD' (repeatOne (m+2) ++ false :: repeatOne b)), right := true :: false :: true :: repeatOne (n+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨4, by decide⟩, head := true, left := true :: tailD' (tailD' (repeatOne (m+2) ++ false :: repeatOne b)), right := false :: true :: repeatOne (n+2) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  rw [step10]
+
+  -- Step 11: 4 -> 4 (Right)
+  rw [show 1 = 1 + 0 by omega, run_add]
+  have step11 : run { state := some ⟨4, by decide⟩, head := true, left := true :: tailD' (tailD' (repeatOne (m+2) ++ false :: repeatOne b)), right := false :: true :: repeatOne (n+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨4, by decide⟩, head := false, left := true :: true :: tailD' (tailD' (repeatOne (m+2) ++ false :: repeatOne b)), right := true :: repeatOne (n+2) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  rw [step11]
+
+  -- Final matching: P_Config_Pad b (m+2) (n+3) (p+1)
+  change run _ 0 = _
+  rw [run]
+  simp [P_Config_Pad]
 
 
 
@@ -646,41 +734,324 @@ lemma decodeTape_of_left_eq {c1 c2 : Config} (hl : c1.left = c2.left) :
 -- Even endgame: from a=2 to valid loop start with a=N+5, b=b+2
 theorem tm_even_endgame_to_loop (b N p : Nat) :
   run (P_Config_Pad b 2 N (p+2)) (3*N + 2*b + 26) = P_Config_Pad (b+2) (N+5) 0 p := by
-  rw [show 3*N + 2*b + 26 = 1 + (1 + (N+1 + (1 + (1 + (N+2 + (1 + (1 + (2*b + 17)))))))) by omega]
-  repeat 2 (rw [run_add]; simp [run, step, transition, P_Config_Pad, headD', tailD', repeatOne, repeatFalse])
-  rw [run_add, A_shift]; simp
-  repeat 2 (rw [run_add]; simp [run, step, transition])
-  rw [run_add, C_shift]; simp
-  repeat 2 (rw [run_add]; simp [run, step, transition])
+  -- Common prefix steps 1-8: 2N+9 steps total
+  -- Step 1: E(0)→F, 1, L
+  have step1 : run (P_Config_Pad b 2 N (p+2)) 1 =
+    { state := some ⟨5, by decide⟩, head := true, left := repeatOne 1 ++ false :: repeatOne b, right := true :: repeatOne N ++ repeatFalse (p+2) } := by
+    simp [run, step, transition, P_Config_Pad]
+  -- Step 2: F(1)→A, 0, R
+  have step2 : run { state := some ⟨5, by decide⟩, head := true, left := repeatOne 1 ++ false :: repeatOne b, right := true :: repeatOne N ++ repeatFalse (p+2) } 1 =
+    { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne 1 ++ false :: repeatOne b, right := repeatOne N ++ repeatFalse (p+2) } := by
+    simp [run, step, transition]
+  -- Step 3: A_shift N (N+1 steps)
+  have step3 : run { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne 1 ++ false :: repeatOne b, right := repeatOne N ++ repeatFalse (p+2) } (N+1) =
+    { state := some ⟨0, by decide⟩, head := false, left := repeatOne (N+1) ++ (false :: repeatOne 1 ++ false :: repeatOne b), right := repeatFalse (p+1) } := by
+    have hA := A_shift N (false :: repeatOne 1 ++ false :: repeatOne b) (repeatFalse (p+2))
+    have hp_head : headD' (repeatFalse (p+2)) false = false := rfl
+    have hp_tail : tailD' (repeatFalse (p+2)) = repeatFalse (p+1) := rfl
+    rw [hp_head, hp_tail] at hA
+    exact hA
+  -- Step 4: A(0)→B, 1, R
+  have step4 : run { state := some ⟨0, by decide⟩, head := false, left := repeatOne (N+1) ++ (false :: repeatOne 1 ++ false :: repeatOne b), right := repeatFalse (p+1) } 1 =
+    { state := some ⟨1, by decide⟩, head := false, left := true :: repeatOne (N+1) ++ (false :: repeatOne 1 ++ false :: repeatOne b), right := repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 5: B(0)→C, 0, L
+  have step5 : run { state := some ⟨1, by decide⟩, head := false, left := true :: repeatOne (N+1) ++ (false :: repeatOne 1 ++ false :: repeatOne b), right := repeatFalse p } 1 =
+    { state := some ⟨2, by decide⟩, head := true, left := repeatOne (N+1) ++ (false :: repeatOne 1 ++ false :: repeatOne b), right := false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 6: C_shift(N+1) (N+2 steps)
+  have step6 : run { state := some ⟨2, by decide⟩, head := true, left := repeatOne (N+1) ++ (false :: repeatOne 1 ++ false :: repeatOne b), right := false :: repeatFalse p } (N+2) =
+    { state := some ⟨2, by decide⟩, head := false, left := repeatOne 1 ++ false :: repeatOne b, right := repeatOne (N+2) ++ false :: repeatFalse p } := by
+    have hC := C_shift (N+1) (false :: repeatOne 1 ++ false :: repeatOne b) (false :: repeatFalse p)
+    have hC_head : headD' (false :: repeatOne 1 ++ false :: repeatOne b) false = false := rfl
+    have hC_tail : tailD' (false :: repeatOne 1 ++ false :: repeatOne b) = repeatOne 1 ++ false :: repeatOne b := rfl
+    rw [hC_head, hC_tail] at hC
+    exact hC
+  -- Step 7: C(0)→D, 1, L
+  have step7 : run { state := some ⟨2, by decide⟩, head := false, left := repeatOne 1 ++ false :: repeatOne b, right := repeatOne (N+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨3, by decide⟩, head := true, left := false :: repeatOne b, right := repeatOne (N+3) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 8: D(1)→B, 0, L
+  have step8 : run { state := some ⟨3, by decide⟩, head := true, left := false :: repeatOne b, right := repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨1, by decide⟩, head := false, left := repeatOne b, right := false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Now split on b
   cases b with
   | zero =>
-    rw [show 2*0 + 17 = 1 + (1 + (1 + (1 + (1 + (3 + (1 + (1 + (1 + (1 + (1 + (N+4))))))))))) by omega]
-    repeat 5 (rw [run_add]; simp [run, step, transition, repeatOne])
-    rw [run_add, E_shift]; simp
-    repeat 5 (rw [run_add]; simp [run, step, transition, repeatOne])
-    rw [run_add, E_shift]; simp
-    unfold P_Config_Pad; simp [repeatOne]
+    -- b = 0 case: 17 more steps
+    -- After step 8: { B, head=false, left=[], right=false :: repeatOne(N+3) ++ false :: repeatFalse p }
+    have step9 : run { state := some ⟨1, by decide⟩, head := false, left := ([] : List TapeSymbol), right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨2, by decide⟩, head := false, left := [], right := false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step10 : run { state := some ⟨2, by decide⟩, head := false, left := ([] : List TapeSymbol), right := false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨3, by decide⟩, head := false, left := [], right := true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step11 : run { state := some ⟨3, by decide⟩, head := false, left := ([] : List TapeSymbol), right := true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨0, by decide⟩, head := false, left := [], right := true :: true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step12 : run { state := some ⟨0, by decide⟩, head := false, left := ([] : List TapeSymbol), right := true :: true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨1, by decide⟩, head := true, left := [true], right := true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step13 : run { state := some ⟨1, by decide⟩, head := true, left := [true], right := true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨4, by decide⟩, head := true, left := [], right := true :: true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    -- E_shift(2): 3 steps
+    have step14 : run { state := some ⟨4, by decide⟩, head := true, left := ([] : List TapeSymbol), right := true :: true :: false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 3 =
+      { state := some ⟨4, by decide⟩, head := false, left := repeatOne 3, right := false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      have hE := E_shift 2 ([] : List TapeSymbol) (false :: false :: repeatOne (N+3) ++ false :: repeatFalse p)
+      simp only [List.append_nil] at hE
+      exact hE
+    have step15 : run { state := some ⟨4, by decide⟩, head := false, left := repeatOne 3, right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨5, by decide⟩, head := true, left := repeatOne 2, right := true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step16 : run { state := some ⟨5, by decide⟩, head := true, left := repeatOne 2, right := true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne 2, right := false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step17 : run { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne 2, right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨0, by decide⟩, head := false, left := true :: false :: repeatOne 2, right := repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step18 : run { state := some ⟨0, by decide⟩, head := false, left := true :: false :: repeatOne 2, right := repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨1, by decide⟩, head := true, left := true :: true :: false :: repeatOne 2, right := repeatOne (N+2) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step19 : run { state := some ⟨1, by decide⟩, head := true, left := true :: true :: false :: repeatOne 2, right := repeatOne (N+2) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨4, by decide⟩, head := true, left := true :: false :: repeatOne 2, right := repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    -- E_shift(N+3): N+4 steps
+    have step20 : run { state := some ⟨4, by decide⟩, head := true, left := true :: false :: repeatOne 2, right := repeatOne (N+3) ++ false :: repeatFalse p } (N+4) =
+      { state := some ⟨4, by decide⟩, head := false, left := repeatOne (N+4) ++ (true :: false :: repeatOne 2), right := repeatFalse p } := by
+      have hE := E_shift (N+3) (true :: false :: repeatOne 2) (false :: repeatFalse p)
+      have hp_head : headD' (false :: repeatFalse p) false = false := rfl
+      have hp_tail : tailD' (false :: repeatFalse p) = repeatFalse p := rfl
+      rw [hp_head, hp_tail] at hE
+      exact hE
+    rw [show 3*N + 2*0 + 26 = 1 + (1 + (N+1 + (1 + (1 + (N+2 + (1 + (1 + (1 + (1 + (1 + (1 + (1 + (3 + (1 + (1 + (1 + (1 + (1 + (N+4)))))))))))))))))))  by omega]
+    rw [run_add, step1]
+    rw [run_add, step2]
+    rw [run_add, step3]
+    rw [run_add, step4]
+    rw [run_add, step5]
+    rw [run_add, step6]
+    rw [run_add, step7]
+    rw [run_add, step8]
+    simp only [repeatOne_zero]
+    rw [run_add, step9]
+    rw [run_add, step10]
+    rw [run_add, step11]
+    rw [run_add, step12]
+    rw [run_add, step13]
+    rw [run_add, step14]
+    rw [run_add, step15]
+    rw [run_add, step16]
+    rw [run_add, step17]
+    rw [run_add, step18]
+    rw [run_add, step19]
+    rw [step20]
+    have h_left : repeatOne (N+4) ++ (true :: false :: repeatOne 2) = repeatOne (N+5) ++ false :: repeatOne 2 :=
+      repeatOne_append_true (N+4) (false :: repeatOne 2)
+    rw [h_left]
+    unfold P_Config_Pad
+    simp [repeatOne_zero]
   | succ b' =>
-    rw [show 2*(b'+1) + 17 = 1 + ((b'+1) + (1 + (1 + (1 + (1 + ((b'+4) + (1 + (1 + (1 + (1 + (1 + (N+4)))))))))))) by omega]
-    rw [run_add]; simp [run, step, transition, repeatOne]
-    rw [run_add, C_shift]; simp
-    repeat 4 (rw [run_add]; simp [run, step, transition, repeatOne])
-    rw [run_add, E_shift]; simp
-    repeat 5 (rw [run_add]; simp [run, step, transition, repeatOne])
-    rw [run_add, E_shift]; simp
-    unfold P_Config_Pad; simp [repeatOne, Nat.add_comm, Nat.add_assoc]
-    congr 2 <;> omega
+    -- b = b'+1 case
+    have step9 : run { state := some ⟨1, by decide⟩, head := false, left := repeatOne (b'+1), right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨2, by decide⟩, head := true, left := repeatOne b', right := false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    -- C_shift(b'): b'+1 steps
+    have step10 : run { state := some ⟨2, by decide⟩, head := true, left := repeatOne b', right := false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } (b'+1) =
+      { state := some ⟨2, by decide⟩, head := false, left := [], right := repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      have hC := C_shift b' ([] : List TapeSymbol) (false :: false :: repeatOne (N+3) ++ false :: repeatFalse p)
+      simp only [List.append_nil, headD'_nil, tailD'_nil] at hC
+      convert hC using 2
+      simp [List.append_assoc]
+    have step11 : run { state := some ⟨2, by decide⟩, head := false, left := ([] : List TapeSymbol), right := repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨3, by decide⟩, head := false, left := [], right := true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step12 : run { state := some ⟨3, by decide⟩, head := false, left := ([] : List TapeSymbol), right := true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨0, by decide⟩, head := false, left := [], right := true :: true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step13 : run { state := some ⟨0, by decide⟩, head := false, left := ([] : List TapeSymbol), right := true :: true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨1, by decide⟩, head := true, left := [true], right := true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step14 : run { state := some ⟨1, by decide⟩, head := true, left := [true], right := true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨4, by decide⟩, head := true, left := [], right := true :: true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    -- E_shift(b'+2): b'+3 steps
+    have step15 : run { state := some ⟨4, by decide⟩, head := true, left := ([] : List TapeSymbol), right := true :: true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p } (b'+4) =
+      { state := some ⟨4, by decide⟩, head := false, left := repeatOne (b'+4), right := false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      have h_right_eq : (true :: true :: repeatOne (b'+1) ++ false :: false :: repeatOne (N+3) ++ false :: repeatFalse p) =
+        repeatOne (b'+3) ++ (false :: false :: repeatOne (N+3) ++ false :: repeatFalse p) := by
+        simp [List.append_assoc]
+      rw [h_right_eq]
+      have hE := E_shift (b'+3) ([] : List TapeSymbol) (false :: false :: repeatOne (N+3) ++ false :: repeatFalse p)
+      simp only [List.append_nil] at hE
+      exact hE
+    have step16 : run { state := some ⟨4, by decide⟩, head := false, left := repeatOne (b'+4), right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨5, by decide⟩, head := true, left := repeatOne (b'+3), right := true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step17 : run { state := some ⟨5, by decide⟩, head := true, left := repeatOne (b'+3), right := true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne (b'+3), right := false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step18 : run { state := some ⟨0, by decide⟩, head := true, left := false :: repeatOne (b'+3), right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨0, by decide⟩, head := false, left := true :: false :: repeatOne (b'+3), right := repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step19 : run { state := some ⟨0, by decide⟩, head := false, left := true :: false :: repeatOne (b'+3), right := repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨1, by decide⟩, head := true, left := true :: true :: false :: repeatOne (b'+3), right := repeatOne (N+2) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    have step20 : run { state := some ⟨1, by decide⟩, head := true, left := true :: true :: false :: repeatOne (b'+3), right := repeatOne (N+2) ++ false :: repeatFalse p } 1 =
+      { state := some ⟨4, by decide⟩, head := true, left := true :: false :: repeatOne (b'+3), right := repeatOne (N+3) ++ false :: repeatFalse p } := by
+      simp [run, step, transition]
+    -- E_shift(N+3): N+4 steps
+    have step21 : run { state := some ⟨4, by decide⟩, head := true, left := true :: false :: repeatOne (b'+3), right := repeatOne (N+3) ++ false :: repeatFalse p } (N+4) =
+      { state := some ⟨4, by decide⟩, head := false, left := repeatOne (N+4) ++ (true :: false :: repeatOne (b'+3)), right := repeatFalse p } := by
+      have hE := E_shift (N+3) (true :: false :: repeatOne (b'+3)) (false :: repeatFalse p)
+      have hp_head : headD' (false :: repeatFalse p) false = false := rfl
+      have hp_tail : tailD' (false :: repeatFalse p) = repeatFalse p := rfl
+      rw [hp_head, hp_tail] at hE
+      exact hE
+    rw [show 3*N + 2*(b'+1) + 26 = 1 + (1 + (N+1 + (1 + (1 + (N+2 + (1 + (1 + (1 + (b'+1 + (1 + (1 + (1 + (1 + (b'+4 + (1 + (1 + (1 + (1 + (1 + (N+4))))))))))))))))))))  by omega]
+    rw [run_add, step1]
+    rw [run_add, step2]
+    rw [run_add, step3]
+    rw [run_add, step4]
+    rw [run_add, step5]
+    rw [run_add, step6]
+    rw [run_add, step7]
+    rw [run_add, step8]
+    rw [run_add, step9]
+    rw [run_add, step10]
+    rw [run_add, step11]
+    rw [run_add, step12]
+    rw [run_add, step13]
+    rw [run_add, step14]
+    rw [run_add, step15]
+    rw [run_add, step16]
+    rw [run_add, step17]
+    rw [run_add, step18]
+    rw [run_add, step19]
+    rw [run_add, step20]
+    rw [step21]
+    have h_left : repeatOne (N+4) ++ (true :: false :: repeatOne (b'+3)) = repeatOne (N+5) ++ false :: repeatOne (b'+3) :=
+      repeatOne_append_true (N+4) (false :: repeatOne (b'+3))
+    rw [h_left]
+    have h_b : b'+3 = b'+1+2 := by omega
+    rw [h_b]
+    unfold P_Config_Pad
+    simp [repeatOne_zero]
 
 -- Odd halt endgame: from a=3, b=0, the machine halts
 theorem tm_odd_halt_endgame (N p : Nat) :
   (run (P_Config_Pad 0 3 N (p+2)) (2*N + 12)).state = none := by
+  -- Step 1: E(0) reading false → (F=state5, 1, L)
+  -- Starting config: P_Config_Pad 0 3 N (p+2) = { state=4, head=false, left=repeatOne 3 ++ [false], right=repeatOne N ++ repeatFalse(p+2) }
+  -- transition(4, false) = (5, true, L): write true, move left
+  -- new head = headD'(repeatOne 3 ++ [false]) = true, new left = tailD'(repeatOne 3 ++ [false]) = repeatOne 2 ++ [false]
+  -- new right = true :: repeatOne N ++ repeatFalse(p+2)
+  have step1 : run (P_Config_Pad 0 3 N (p+2)) 1 =
+    { state := some ⟨5, by decide⟩, head := true, left := repeatOne 2 ++ [false], right := true :: repeatOne N ++ repeatFalse (p+2) } := by
+    simp [run, step, transition, P_Config_Pad]
+  -- Step 2: F(1) reading true → (A=state0, 0, R)
+  -- transition(5, true) = (0, false, R): write false, move right
+  -- new head = headD'(right) = headD'(repeatOne N ++ repeatFalse(p+2))
+  -- For N=0: head = false; for N>0: head = true. Either way, new head = true (since right = true :: ...)
+  -- Actually right = true :: repeatOne N ++ repeatFalse(p+2), so headD'(right) = true... wait
+  -- The right tape in step1 result is `true :: repeatOne N ++ repeatFalse(p+2)`
+  -- So tailD'(right) = repeatOne N ++ repeatFalse(p+2), headD'(right) = true
+  -- Hmm, but transition(5, true) = (0, false, R), so we move right:
+  -- new left = false :: (repeatOne 2 ++ [false])
+  -- new head = headD'(true :: repeatOne N ++ repeatFalse(p+2)) = true
+  -- new right = tailD'(true :: repeatOne N ++ repeatFalse(p+2)) = repeatOne N ++ repeatFalse(p+2)
+  have step2 : run { state := some ⟨5, by decide⟩, head := true, left := repeatOne 2 ++ [false], right := true :: repeatOne N ++ repeatFalse (p+2) } 1 =
+    { state := some ⟨0, by decide⟩, head := true, left := false :: (repeatOne 2 ++ [false]), right := repeatOne N ++ repeatFalse (p+2) } := by
+    simp [run, step, transition]
+  -- Step 3: A_shift N (N+1 steps)
+  -- A_shift: run { state=0, head=true, left=L, right=repeatOne N ++ R } (N+1) = { state=0, head=headD' R false, left=repeatOne(N+1) ++ L, right=tailD' R }
+  -- L = false :: (repeatOne 2 ++ [false]), R = repeatFalse(p+2)
+  -- headD'(repeatFalse(p+2)) = false, tailD'(repeatFalse(p+2)) = repeatFalse(p+1)
+  have step3 : run { state := some ⟨0, by decide⟩, head := true, left := false :: (repeatOne 2 ++ [false]), right := repeatOne N ++ repeatFalse (p+2) } (N+1) =
+    { state := some ⟨0, by decide⟩, head := false, left := repeatOne (N+1) ++ (false :: (repeatOne 2 ++ [false])), right := repeatFalse (p+1) } := by
+    have hA := A_shift N (false :: (repeatOne 2 ++ [false])) (repeatFalse (p+2))
+    have hp_head : headD' (repeatFalse (p+2)) false = false := rfl
+    have hp_tail : tailD' (repeatFalse (p+2)) = repeatFalse (p+1) := rfl
+    rw [hp_head, hp_tail] at hA
+    exact hA
+  -- Step 4: A(0) → (B=state1, 1, R)
+  -- transition(0, false) = (1, true, R): write true, move right
+  -- new left = true :: (repeatOne(N+1) ++ (false :: (repeatOne 2 ++ [false])))
+  -- new head = headD'(repeatFalse(p+1)) = false
+  -- new right = tailD'(repeatFalse(p+1)) = repeatFalse p
+  have step4 : run { state := some ⟨0, by decide⟩, head := false, left := repeatOne (N+1) ++ (false :: (repeatOne 2 ++ [false])), right := repeatFalse (p+1) } 1 =
+    { state := some ⟨1, by decide⟩, head := false, left := true :: repeatOne (N+1) ++ (false :: (repeatOne 2 ++ [false])), right := repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 5: B(0) → (C=state2, 0, L)
+  -- transition(1, false) = (2, false, L): write false, move left
+  -- new head = headD'(true :: repeatOne(N+1) ++ ...) = true
+  -- new left = tailD'(true :: repeatOne(N+1) ++ ...) = repeatOne(N+1) ++ (false :: (repeatOne 2 ++ [false]))
+  -- new right = false :: repeatFalse p
+  have step5 : run { state := some ⟨1, by decide⟩, head := false, left := true :: repeatOne (N+1) ++ (false :: (repeatOne 2 ++ [false])), right := repeatFalse p } 1 =
+    { state := some ⟨2, by decide⟩, head := true, left := repeatOne (N+1) ++ (false :: (repeatOne 2 ++ [false])), right := false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 6: C_shift (N+1) → N+2 steps
+  -- C_shift: run { state=2, head=true, left=repeatOne(N+1) ++ L, right=R } (N+2) = { state=2, head=headD' L false, left=tailD' L, right=repeatOne(N+2) ++ R }
+  -- L = false :: (repeatOne 2 ++ [false]), R = false :: repeatFalse p
+  -- headD'(false :: ...) = false, tailD'(false :: ...) = repeatOne 2 ++ [false]
+  have step6 : run { state := some ⟨2, by decide⟩, head := true, left := repeatOne (N+1) ++ (false :: (repeatOne 2 ++ [false])), right := false :: repeatFalse p } (N+2) =
+    { state := some ⟨2, by decide⟩, head := false, left := repeatOne 2 ++ [false], right := repeatOne (N+2) ++ false :: repeatFalse p } := by
+    have hC := C_shift (N+1) (false :: (repeatOne 2 ++ [false])) (false :: repeatFalse p)
+    have hC_head : headD' (false :: (repeatOne 2 ++ [false])) false = false := rfl
+    have hC_tail : tailD' (false :: (repeatOne 2 ++ [false])) = repeatOne 2 ++ [false] := rfl
+    rw [hC_head, hC_tail] at hC
+    exact hC
+  -- Step 7: C(0) → (D=state3, 1, L)
+  -- transition(2, false) = (3, true, L): write true, move left
+  -- left = repeatOne 2 ++ [false] = [true, true, false]
+  -- new head = headD'([true, true, false]) = true
+  -- new left = tailD'([true, true, false]) = [true, false]
+  -- new right = true :: (repeatOne(N+2) ++ false :: repeatFalse p) = repeatOne(N+3) ++ false :: repeatFalse p
+  have step7 : run { state := some ⟨2, by decide⟩, head := false, left := repeatOne 2 ++ [false], right := repeatOne (N+2) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨3, by decide⟩, head := true, left := [true, false], right := repeatOne (N+3) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 8: D(1) → (B=state1, 0, L)
+  -- transition(3, true) = (1, false, L): write false, move left
+  -- left = [true, false]
+  -- new head = headD'([true, false]) = true
+  -- new left = tailD'([true, false]) = [false]
+  -- new right = false :: (repeatOne(N+3) ++ false :: repeatFalse p)
+  have step8 : run { state := some ⟨3, by decide⟩, head := true, left := [true, false], right := repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨1, by decide⟩, head := true, left := [false], right := false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 9: B(1) → (E=state4, 1, L)
+  -- transition(1, true) = (4, true, L): write true, move left
+  -- left = [false]
+  -- new head = headD'([false]) = false
+  -- new left = tailD'([false]) = []
+  -- new right = true :: false :: repeatOne(N+3) ++ false :: repeatFalse p
+  have step9 : run { state := some ⟨1, by decide⟩, head := true, left := [false], right := false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨4, by decide⟩, head := false, left := [], right := true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Step 10: E(0) → (F=state5, 1, L)
+  -- transition(4, false) = (5, true, L): write true, move left
+  -- left = []
+  -- new head = headD'([]) = false
+  -- new left = []
+  -- new right = true :: true :: false :: repeatOne(N+3) ++ false :: repeatFalse p
+  have step10 : run { state := some ⟨4, by decide⟩, head := false, left := [], right := true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } 1 =
+    { state := some ⟨5, by decide⟩, head := false, left := [], right := true :: true :: false :: repeatOne (N+3) ++ false :: repeatFalse p } := by
+    simp [run, step, transition]
+  -- Chain all steps: 1 + 1 + (N+1) + 1 + 1 + (N+2) + 1 + 1 + 1 + 1 + 1 = 2N+12
   rw [show 2*N + 12 = 1 + (1 + ((N+1) + (1 + (1 + ((N+2) + (1 + (1 + (1 + (1 + 1))))))))) by omega]
-  repeat 2 (rw [run_add]; simp [run, step, transition, P_Config_Pad, headD', tailD', repeatOne, repeatFalse])
-  rw [run_add, A_shift]; simp
-  repeat 2 (rw [run_add]; simp [run, step, transition])
-  rw [run_add, C_shift]; simp
-  repeat 5 (rw [run_add]; simp [run, step, transition])
-
+  rw [run_add, step1]
+  rw [run_add, step2]
+  rw [run_add, step3]
+  rw [run_add, step4]
+  rw [run_add, step5]
+  rw [run_add, step6]
+  rw [run_add, step7]
+  rw [run_add, step8]
+  rw [run_add, step9]
+  rw [run_add, step10]
+  -- Step 11: F(0) → HALT. transition(5, false) = (none, false, R)
+  -- The state is now some 5 (F) with head false, so it halts
+  simp [run, step, transition]
 
 -- Helper lemmas for tm_simulates_math
 
@@ -1007,7 +1378,10 @@ private lemma Aiter_implies_mathHalts (a b : ℕ) (ha : a ≥ 2)
     by_cases hstop : a % 2 = 1 ∧ b = 0
     · exact mathHalts.haltStep _ ((nextMathState_none_iff ha).mpr hstop)
     · rw [Aiter_succ'] at hi
-      exact mathHalts.nextStep _ _ (nextMathState_some_eq_A ha hstop) (ih _ _ (A_fst_ge_2' _ ha) hi)
+      have hA2 : (A (a, b)).1 ≥ 2 := A_fst_ge_2' (a, b) ha
+      apply mathHalts.nextStep { a := a, b := b } { a := (A (a, b)).1, b := (A (a, b)).2 }
+      · exact nextMathState_some_eq_A ha hstop
+      · exact ih (A (a, b)).1 (A (a, b)).2 hA2 hi
 
 -- Key bridge: mathHalts {a=8,b=2} ↔ ∃ i, Aiter i (8,2) satisfies halt condition
 lemma mathHalts_iff_Aiter_8_2 :
@@ -1023,12 +1397,19 @@ lemma mathHalts_iff_Aiter_8_2 :
 lemma antihydra_halts_iff :
     (∃ k, (run initConfig k).state = none) ↔
     ∃ i, (Aiter i (8, 2)).1 % 2 = 1 ∧ (Aiter i (8, 2)).1 / 2 ≥ 1 ∧ (Aiter i (8, 2)).2 = 0 := by
-  have hv : isValidLoopStart (run initConfig 58) := antihydra_init_loop_start ▸ isValidLoopStart_P248
-  rw [show (∃ k, (run initConfig k).state = none) ↔ (∃ k, (run (run initConfig 58) k).state = none) by
+  have hv : isValidLoopStart (run initConfig 58) :=
+    antihydra_init_loop_start ▸ isValidLoopStart_P248
+  have step1 : (∃ k, (run initConfig k).state = none) ↔
+               (∃ k, (run (run initConfig 58) k).state = none) := by
     constructor
-    · rintro ⟨k, hk⟩; by_cases h : 58 ≤ k
-      · exact ⟨k - 58, by rw [← run_add, Nat.add_sub_cancel' h]; exact hk⟩
+    · rintro ⟨k, hk⟩
+      by_cases h : 58 ≤ k
+      · refine ⟨k - 58, ?_⟩
+        have heq : run initConfig (58 + (k - 58)) = run (run initConfig 58) (k - 58) := run_add _ _ _
+        rw [Nat.add_sub_cancel' h] at heq
+        rw [← heq]; exact hk
       · exact absurd hk (no_halt_before_58 k (by omega))
-    · rintro ⟨k, hk⟩; exact ⟨58 + k, by rw [run_add]; exact hk⟩]
-  rw [tm_halt_iff_math_condition _ hv, antihydra_init_math_state, mathHalts_iff_Aiter_8_2]
-
+    · rintro ⟨k, hk⟩
+      exact ⟨58 + k, show (run initConfig (58 + k)).state = none by rw [run_add]; exact hk⟩
+  rw [step1, tm_halt_iff_math_condition _ hv, antihydra_init_math_state]
+  exact mathHalts_iff_Aiter_8_2
