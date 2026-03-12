@@ -1,5 +1,3 @@
---import Mathlib.Data.Nat.ModEq
---import Mathlib.Algebra.Ring.Parity
 import Mathlib.Analysis.Normed.Ring.Lemmas
 
 open BigOperators
@@ -100,7 +98,7 @@ def Aiter (i : ℕ) (ab : ℕ × ℕ) : ℕ × ℕ := A^[i] ab
 /-- A applied to (c - 4, b) where c = C-value gives first component C(c) - 4. -/
 -- Helper: unfold BEq for Nat
 @[simp] lemma Nat.beq_eq_decide' (a b : ℕ) : (a == b) = decide (a = b) := by
-  simp [BEq.beq, Nat.beq_eq]
+  simp [BEq.beq]
 
 lemma A_fst (c b : ℕ) (hc : c ≥ 4) :
     (A (c - 4, b)).1 = C c - 4 := by
@@ -127,7 +125,7 @@ lemma A_fst_only (a b b' : ℕ) : (A (a, b)).1 = (A (a, b')).1 := by
 /-- First component relation: (Aiter i (8, 2)).1 = Citer (i+1) 8 - 4. -/
 lemma Aiter_fst_eq (i : ℕ) : (Aiter i (8, 2)).1 = Citer (i + 1) 8 - 4 := by
   induction i with
-  | zero => simp [Aiter, Citer_succ, A, C]
+  | zero => simp [Aiter, Citer_succ, C]
   | succ i ih =>
     simp only [Aiter, Function.iterate_succ_apply']
     have ih' : (A^[i] (8, 2)).1 = Citer (i + 1) 8 - 4 := ih
@@ -268,5 +266,25 @@ lemma Aiter_8_2_halt_iff_Citer_8_halt :
       obtain ⟨j, hji, hodd, hb⟩ := hnotrunc
       have hb0 : (Aiter j (8, 2)).2 = 0 := by omega
       exact ⟨j, hodd, Aiter_fst_div2_always j, hb0⟩
+
+lemma Aiter_8_2_halt_iff_Diter_7_halt :
+  (∃ i, (Aiter i (8, 2)).1 % 2 = 1 ∧ (Aiter i (8, 2)).1 / 2 ≥ 1 ∧ (Aiter i (8, 2)).2 = 0) ↔
+  (∃ i, (Diter (i + 1) 7) % 2 = 0 ∧ (Diter (i + 1) 7) ≥ 5 ∧ i % 3 = 2 ∧
+    (∑ j ∈ Finset.range (i + 1), (Diter j 7) % 2) = (i + 1) / 3) := by
+  rw [Aiter_8_2_halt_iff_Citer_8_halt]
+  simp only [show (8 : ℕ) = 7 + 1 from rfl, Citer_succ_eq_Diter_succ]
+  constructor <;> rintro ⟨i, h1, h2, h3, h4⟩ <;> refine ⟨i, by omega, by omega, h3, ?_⟩
+  · -- (Diter j 7 + 1) % 2 sum = 2*(i+1)/3  →  Diter j 7 % 2 sum = (i+1)/3
+    -- Key: (n+1)%2 + n%2 = 1, so the two sums add to (i+1)
+    have hsum_add : ∀ n, (∑ j ∈ Finset.range (n + 1), (Diter j 7 + 1) % 2) +
+        (∑ j ∈ Finset.range (n + 1), Diter j 7 % 2) = n + 1 := by
+      intro n; rw [← Finset.sum_add_distrib]; simp_rw [show ∀ j, (Diter j 7 + 1) % 2 + Diter j 7 % 2 = 1 from by omega]
+      simp [Finset.sum_const, Finset.card_range]
+    have := hsum_add i; omega
+  · have hsum_add : ∀ n, (∑ j ∈ Finset.range (n + 1), (Diter j 7 + 1) % 2) +
+        (∑ j ∈ Finset.range (n + 1), Diter j 7 % 2) = n + 1 := by
+      intro n; rw [← Finset.sum_add_distrib]; simp_rw [show ∀ j, (Diter j 7 + 1) % 2 + Diter j 7 % 2 = 1 from by omega]
+      simp [Finset.sum_const, Finset.card_range]
+    have := hsum_add i; omega
 
 --#min_imports
