@@ -1,0 +1,234 @@
+\section{Asymptotic Behavior of the Iteration}
+\label{sec:asymptotic}
+
+In this section, we analyze the growth of the generalized iteration $D_q$ and show that it grows geometrically with a specific ratio $\alpha_q$, up to a bounded error.
+
+\begin{definition}
+  \label{def:Dstep}
+  \lean{Dstep}
+  \leanok
+  For $q \ge 2$ and $n \in \mathbb{N}$, we define the one-step iteration function $D_q: \mathbb{N} \to \mathbb{N}$ as:
+  \[ D_q(n) = \left\lceil \frac{q}{q-1} n \right\rceil = \left\lfloor \frac{qn + q - 2}{q - 1} \right\rfloor. \]
+\end{definition}
+
+\begin{definition}
+  \label{def:Diter'}
+  \lean{Diter'}
+  \leanok
+  For $k, q, n \in \mathbb{N}$ with $q \ge 2$, we define $D_q(k, n)$ as the $k$-th iterate of $D_q$ starting from $n$:
+  \[ D_q(k, n) = D_q^{(k)}(n). \]
+\end{definition}
+
+\begin{definition}
+  \label{def:E}
+  \lean{E}
+  \leanok
+  The integer error term $E(q, n)$ for $q \ge 2, n \ge 1$ is defined as:
+  \[ E(q, n) = q - 2 - ((n - 1) \pmod{q - 1}). \]
+  For $n=0$, we set $E(q, 0) = q - 2$.
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:Dstep_exact}
+  \lean{Dstep_exact}
+  \leanok
+  For $q \ge 2$ and $n \ge 1$, the following exact relation holds in $\mathbb{N}$:
+  \[ D_q(n) \cdot (q - 1) = qn + E(q, n). \]
+  \begin{proof}
+    \leanok
+    By definition, $D_q(n) = \lfloor (qn + q - 2) / (q - 1) \rfloor$. Let $N = qn + q - 2$ and $d = q - 1$.
+    Then $N = d \cdot D_q(n) + r$, where $r = N \pmod d$.
+    We have $r = (qn + q - 2) \pmod{q-1} = (n(q-1) + n + q - 2) \pmod{q-1} = (n - 1) \pmod{q-1}$.
+    Thus $D_q(n)(q-1) = N - r = (qn + q - 2) - ((n - 1) \pmod{q-1}) = qn + E(q, n)$.
+  \end{proof}
+\end{lemma}
+
+\begin{definition}
+  \label{def:alpha}
+  \lean{α}
+  \leanok
+  For $q \ge 2$, the growth ratio $\alpha_q$ is defined as:
+  \[ \alpha_q = \frac{q}{q-1}. \]
+\end{definition}
+
+\begin{definition}
+  \label{def:e_step}
+  \lean{e_step}
+  \leanok
+  The real-valued error at step $k$ for starting value $n$ is:
+  \[ e_q(k, n) = \frac{E(q, D_q(k, n))}{q - 1}. \]
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:Diter'_real_recurrence}
+  \lean{Diter'_real_recurrence}
+  \leanok
+  For $q \ge 2, n \ge 1$, the sequence $D_q(k, n)$ satisfies the real recurrence:
+  \[ D_q(k+1, n) = \alpha_q D_q(k, n) + e_q(k, n). \]
+  \begin{proof}
+    \leanok
+    Applying Lemma~\ref{lemma:Dstep_exact} to $D_q(k, n)$, we have:
+    \[ D_q(k+1, n) (q - 1) = q D_q(k, n) + E(q, D_q(k, n)). \]
+    Dividing by $q-1$:
+    \[ D_q(k+1, n) = \frac{q}{q-1} D_q(k, n) + \frac{E(q, D_q(k, n))}{q-1}. \]
+    Substituting the definitions of $\alpha_q$ and $e_q(k, n)$ yields the result.
+  \end{proof}
+\end{lemma}
+
+\begin{definition}
+  \label{def:u_seq}
+  \lean{u_seq}
+  \leanok
+  The normalized sequence $u_q(n, k)$ is defined as:
+  \[ u_q(n, k) = \frac{D_q(k, n)}{\alpha_q^k}. \]
+\end{definition}
+
+\begin{definition}
+  \label{def:K_summand}
+  \lean{K_summand}
+  \leanok
+  The summand $k_q(n, j)$ is defined as:
+  \[ k_q(n, j) = \frac{e_q(j, n)}{\alpha_q^{j+1}}. \]
+\end{definition}
+
+\begin{definition}
+  \label{def:K_const}
+  \lean{K_const}
+  \leanok
+  The asymptotic constant $K_q(n)$ is defined as the limit of the normalized sequence $u_q(n, k)$:
+  \[ K_q(n) = n + \sum_{j=0}^{\infty} k_q(n, j). \]
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:K_const_le}
+  \lean{K_const_le}
+  \leanok
+  For $q \ge 2$ and $n \in \mathbb{N}$, the constant $K_q(n)$ is bounded by:
+  \[ K_q(n) \le n + q - 2. \]
+  \begin{proof}
+    \leanok
+    $K_q(n) = n + \sum_{j=0}^{\infty} k_q(n, j)$.
+    The error term $E(q, D_q(j, n))$ is bounded above by $q-2$. Thus $e_q(j, n) \le \frac{q-2}{q-1}$.
+    The sum is a geometric series:
+    \[ \sum_{j=0}^{\infty} k_q(n, j) \le \frac{q-2}{q-1} \sum_{j=0}^{\infty} \alpha_q^{-(j+1)} = \frac{q-2}{q-1} \frac{\alpha_q^{-1}}{1 - \alpha_q^{-1}} = \frac{q-2}{q-1} \frac{1}{\alpha_q - 1}. \]
+    Since $\alpha_q - 1 = \frac{q}{q-1} - 1 = \frac{1}{q-1}$, the sum is $(q-2)/(q-1) \cdot (q-1) = q-2$.
+    Thus $K_q(n) \le n + q - 2$.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:Dstep_ge_two}
+  \lean{Dstep_ge_two}
+  \leanok
+  For $q \ge 2$ and $n \ge 1$, we have $D_q(n) \ge 2$.
+  \begin{proof}
+    \leanok
+    $D_q(n) = \lceil \frac{q}{q-1} n \rceil$.
+    For $n \ge 1$, $\frac{q}{q-1} n \ge \frac{q}{q-1} = 1 + \frac{1}{q-1}$.
+    Since $q \ge 2$, $q-1 \ge 1$, so $0 < \frac{1}{q-1} \le 1$.
+    Thus $1 < \frac{q}{q-1} \le 2$. The ceiling of any value in $(1, 2]$ is at least 2.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:tsum_K_summand_lt}
+  \lean{tsum_K_summand_lt}
+  \leanok
+  For $q \ge 3$ and $n \ge 1$, the sum of the error terms is strictly bounded:
+  \[ \sum_{j=0}^{\infty} k_q(n, j) < q - 2. \]
+  \begin{proof}
+    \leanok
+    If the sum were equal to $q-2$, then every error term $E(q, D_q(j, n))$ would have to be maximal (equal to $q-2$).
+    This would imply a divisibility condition on the starting value that must hold for all powers of $q-1$, which is impossible for a non-zero integer.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:Diter'_pos}
+  \lean{Diter'_pos}
+  \leanok
+  For $q \ge 2$ and $n \ge 1$, the sequence $D_q(k, n)$ remains positive for all $k$:
+  \[ D_q(k, n) \ge 1. \]
+  \begin{proof}
+    \leanok
+    By induction on $k$. For $k=0$, $D_q(0, n) = n \ge 1$.
+    For the inductive step, $D_q(k+1, n) = D_q(D_q(k, n))$.
+    By the inductive hypothesis $D_q(k, n) \ge 1$, and by Lemma~\ref{lemma:Dstep_ge_two}, $D_q(m) \ge 2$ for $m \ge 1$.
+    Thus $D_q(k+1, n) \ge 2 \ge 1$.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:K_tail_eq_shifted}
+  \lean{K_tail_eq_shifted}
+  \leanok
+  The tail of the constant's series is related to the constant for the shifted starting point:
+  \[ (K_q(n) - u_q(n, k)) \alpha_q^k = \sum_{j=0}^{\infty} k_q(D_q(k, n), j). \]
+  \begin{proof}
+    \leanok
+    $K_q(n) - u_q(n, k) = \sum_{j=k}^{\infty} k_q(n, j) = \sum_{j=0}^{\infty} \frac{e_q(j+k, n)}{\alpha_q^{j+k+1}}$.
+    Since $D_q(j+k, n) = D_q(j, D_q(k, n))$, we have $e_q(j+k, n) = e_q(j, D_q(k, n))$.
+    Then $\frac{e_q(j+k, n)}{\alpha_q^{j+k+1}} = \frac{1}{\alpha_q^k} \frac{e_q(j, D_q(k, n))}{\alpha_q^{j+1}} = \alpha_q^{-k} k_q(D_q(k, n), j)$.
+    Multiplying by $\alpha_q^k$ gives the result.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:K_sub_u_lt}
+  \lean{K_sub_u_lt}
+  \leanok
+  For $q \ge 3$, the error remains bounded away from $q-2$:
+  \[ K_q(n) - u_q(n, k) < \frac{q - 2}{\alpha_q^k}. \]
+  \begin{proof}
+    \leanok
+    By Lemma~\ref{lemma:K_tail_eq_shifted} and Lemma~\ref{lemma:tsum_K_summand_lt},
+    $(K_q(n) - u_q(n, k)) \alpha_q^k = \sum_{j=0}^{\infty} k_q(D_q(k, n), j) < q - 2$.
+    Dividing by $\alpha_q^k$ gives the result.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:K_const_iterate}
+  \lean{K_const_iterate}
+  \leanok
+  The constant $K_q$ scales along orbits:
+  \[ K_q(D_q(k, n)) = K_q(n) \cdot \alpha_q^k. \]
+  \begin{proof}
+    \leanok
+    $K_q(D_q(k, n)) = D_q(k, n) + \sum_{j=0}^{\infty} k_q(D_q(k, n), j)$.
+    By definition $D_q(k, n) = u_q(n, k) \alpha_q^k$, and by Lemma~\ref{lemma:K_tail_eq_shifted} the sum is $(K_q(n) - u_q(n, k)) \alpha_q^k$.
+    Adding these yields $K_q(n) \alpha_q^k$.
+  \end{proof}
+\end{lemma}
+
+\begin{theorem}
+  \label{thm:Diter'_asymptotic}
+  \lean{Diter'_asymptotic}
+  \leanok
+  For any $q \ge 2$ and $n \in \mathbb{N}$, there exists a constant $K = K_q(n)$ such that for all $k \in \mathbb{N}$, the error $\varepsilon = D_q(k, n) - K \alpha_q^k$ satisfies:
+  \begin{enumerate}
+    \item If $q = 2$, then $\varepsilon = 0$.
+    \item If $q \ge 3$, then $-(q - 2) < \varepsilon \le 0$.
+  \end{enumerate}
+  \begin{proof}
+    \leanok
+    The proof uses the telescoping sum representation of $u_q(n, k)$ and the fact that $K_q(n)$ is its limit.
+    The upper bound $\varepsilon \le 0$ comes from the non-negativity of the error terms $e_q(k, n)$.
+    The lower bound $\varepsilon > -(q-2)$ follows from Lemma~\ref{lemma:tsum_K_summand_lt} and the property that $K_q(D_q(k, n)) = K_q(n) \alpha_q^k$.
+  \end{proof}
+\end{theorem}
+
+\begin{corollary}
+  \label{cor:Diter'_eq_floor}
+  \lean{Diter'_eq_floor}
+  \leanok
+  For $q \in \{2, 3\}$ and $n \in \mathbb{N}$, there exists a constant $K = K_q(n)$ such that for all $k \in \mathbb{N}$:
+  \[ D_q(k, n) = \lfloor K \alpha_q^k \rfloor. \]
+  \begin{proof}
+    \leanok
+    By Theorem~\ref{thm:Diter'_asymptotic}, the error $\varepsilon = D_q(k, n) - K \alpha_q^k$ satisfies $-(q-2) < \varepsilon \le 0$ for $q \ge 3$ and $\varepsilon = 0$ for $q=2$.
+    For $q=2$, $D_2(k, n) = K \alpha_2^k$, so the floor formula holds trivially.
+    For $q=3$, we have $-1 < \varepsilon \le 0$, which means $D_3(k, n) \le K \alpha_3^k < D_3(k, n) + 1$.
+    The definition of the floor function then gives $\lfloor K \alpha_3^k \rfloor = D_3(k, n)$.
+  \end{proof}
+\end{corollary}

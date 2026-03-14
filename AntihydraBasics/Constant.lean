@@ -516,6 +516,19 @@ lemma K_tail_eq_shifted (q : ℕ) (n : ℕ) (k : ℕ) (hq : q ≥ 2) (hn : n ≥
   simp_rw [hrel, tsum_mul_right]
   rw [htail]
 
+/-- K scales along orbits: K(q, D_k(n)) = K(q, n) · α^k.
+    This means the asymptotic constant for any point on an orbit is determined
+    by the constant at the starting point. -/
+lemma K_const_iterate (q n k : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) :
+    K_const q (Diter' k q n) = K_const q n * (α q) ^ k := by
+  have hαk_pos : (α q) ^ k > 0 := pow_pos (α_pos q hq) k
+  have htail := K_tail_eq_shifted q n k hq hn
+  have hu_def : u_seq q n k * (α q) ^ k = (Diter' k q n : ℝ) := by
+    simp [u_seq]; rw [div_mul_cancel₀ _ hαk_pos.ne']
+  -- K(D_k) = D_k + ∑' K_summand(D_k) = D_k + (K(n) - u_k)*α^k = u_k*α^k + K(n)*α^k - u_k*α^k
+  simp only [K_const] at htail ⊢
+  linarith
+
 theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
     ∃ K : ℝ, ∀ k : ℕ,
       let ε := (Diter' k q n : ℝ) - K * ((q : ℝ) / ((q : ℝ) - 1)) ^ k
@@ -577,3 +590,28 @@ theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
           (u_seq q n k - K_const q n) * (α q) ^ k from by ring]
         have huk_le := u_seq_le_K q n k hq hn'
         nlinarith
+
+/-- For q ≤ 3 (i.e. q = 2 or q = 3), Diter' is exactly the floor of K · α^k.
+    Corollary of `Diter'_asymptotic`: the error ε ∈ (-(q-2), 0] and q-2 ≤ 1
+    forces D_k ≤ K·α^k < D_k + 1. -/
+theorem Diter'_eq_floor (q : ℕ) (hq : q ≥ 2) (hq3 : q ≤ 3) (n : ℕ) :
+    ∃ K : ℝ, ∀ k : ℕ,
+      Diter' k q n = ⌊K * ((q : ℝ) / ((q : ℝ) - 1)) ^ k⌋₊ := by
+  obtain ⟨K, hK⟩ := Diter'_asymptotic q hq n
+  refine ⟨K, fun k => ?_⟩
+  set a := (q : ℝ) / ((q : ℝ) - 1)
+  obtain ⟨h2, h3⟩ := hK k
+  have hle : (Diter' k q n : ℝ) ≤ K * a ^ k := by
+    rcases show q = 2 ∨ q = 3 from by omega with rfl | rfl
+    · linarith [h2 rfl]
+    · linarith [(h3 (by omega)).2]
+  have hlt : K * a ^ k < (Diter' k q n : ℝ) + 1 := by
+    rcases show q = 2 ∨ q = 3 from by omega with rfl | rfl
+    · linarith [h2 rfl]
+    · have := (h3 (by omega)).1; push_cast at this ⊢; linarith
+  apply le_antisymm
+  · exact Nat.le_floor hle
+  · have : ⌊K * a ^ k⌋₊ < Diter' k q n + 1 := by
+      rw [Nat.floor_lt' (by omega)]
+      exact_mod_cast hlt
+    omega
