@@ -232,3 +232,38 @@ In this section, we analyze the growth of the generalized iteration $D_q$ and sh
     The definition of the floor function then gives $\lfloor K \alpha_3^k \rfloor = D_3(k, n)$.
   \end{proof}
 \end{corollary}
+
+\begin{lemma}
+  \label{lemma:Dstep_strictMono}
+  \lean{Dstep_strictMono}
+  \leanok
+  For $q \ge 2$, the map $D_q$ is strictly monotone: if $m < n$, then $D_q(m) < D_q(n)$.
+  \begin{proof}
+    \leanok
+    We must show that $\lfloor (qm + q - 2)/(q-1) \rfloor < \lfloor (qn + q - 2)/(q-1) \rfloor$.
+    It suffices to prove that the left-hand side plus $1$ is at most the right-hand side, i.e.,
+    \[ \left\lfloor \frac{qm + q - 2}{q-1} \right\rfloor + 1 \le \left\lfloor \frac{qn + q - 2}{q-1} \right\rfloor. \]
+    Since $\lfloor a/(q-1) \rfloor + 1 = \lfloor (a + (q-1))/(q-1) \rfloor$ for natural numbers,
+    we reduce to showing $qm + q - 2 + (q - 1) \le qn + q - 2$, i.e., $qm + q - 1 \le qn$.
+    From $m < n$ we get $m + 1 \le n$, so $q(m+1) = qm + q \le qn$, which gives $qm + q - 1 < qm + q \le qn$.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:orbit_shared_point}
+  \lean{orbit_shared_point}
+  \leanok
+  For $q \ge 2$, if two orbits under $D_q$ share a point---that is, if $D_q^{(j)}(m) = D_q^{(k)}(n)$ for some $j, k \in \mathbb{N}$---then one starting value lies on the other's orbit:
+  either $m = D_q^{(l)}(n)$ for some $l$, or $n = D_q^{(l)}(m)$ for some $l$.
+  \begin{proof}
+    \leanok
+    By Lemma~\ref{lemma:Dstep_strictMono}, $D_q$ is strictly monotone and hence injective.
+    By induction, the $j$-fold iterate $D_q^{(j)}$ is also injective for every $j$.
+
+    Without loss of generality, assume $j \le k$ (the case $k < j$ is symmetric).
+    Write $k = j + (k - j)$.
+    Then the hypothesis becomes $D_q^{(j)}(m) = D_q^{(j)}(D_q^{(k-j)}(n))$,
+    using the composition identity $D_q^{(j+(k-j))}(n) = D_q^{(j)}(D_q^{(k-j)}(n))$.
+    By injectivity of $D_q^{(j)}$, we conclude $m = D_q^{(k-j)}(n)$, so $m$ lies on the orbit of $n$.
+  \end{proof}
+\end{lemma}

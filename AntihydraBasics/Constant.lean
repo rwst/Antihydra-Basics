@@ -615,3 +615,47 @@ theorem Diter'_eq_floor (q : ℕ) (hq : q ≥ 2) (hq3 : q ≤ 3) (n : ℕ) :
       rw [Nat.floor_lt' (by omega)]
       exact_mod_cast hlt
     omega
+
+/-- Dstep q is strictly monotone: m < n → Dstep q m < Dstep q n. -/
+lemma Dstep_strictMono (q : ℕ) (hq : q ≥ 2) : StrictMono (Dstep q) := by
+  intro m n hmn
+  -- Dstep q n = (q * n + q - 2) / (q - 1). Use: n ≥ m + 1, so q*n ≥ q*(m+1) = q*m + q
+  -- Thus q*n + q - 2 ≥ q*m + q + q - 2 = (q*m + q - 2) + q
+  -- Since q > q - 1, adding q to the numerator strictly increases the floor division by at least 1
+  simp only [Dstep]
+  have hqm1 : 0 < q - 1 := by omega
+  -- Suffices: (q*m + q - 2) / (q-1) + 1 ≤ (q*n + q - 2) / (q-1)
+  -- i.e., (q*m + q - 2 + (q-1)) / (q-1) ≤ (q*n + q - 2) / (q-1) [by Nat.succ_div_le]
+  -- i.e., (q*m + 2*q - 3) / (q-1) ≤ (q*n + q - 2) / (q-1)
+  -- Which follows from q*m + 2*q - 3 ≤ q*n + q - 2, i.e., q*m + q - 1 ≤ q*n
+  -- Which holds since q*(m+1) ≤ q*n and q*(m+1) = q*m + q > q*m + q - 1
+  suffices h : (q * m + q - 2) / (q - 1) + 1 ≤ (q * n + q - 2) / (q - 1) by omega
+  rw [← Nat.add_div_right _ hqm1]
+  apply Nat.div_le_div_right
+  -- Need: q * m + q - 2 + (q - 1) ≤ q * n + q - 2
+  -- i.e., q * m + 2*q - 3 ≤ q * n + q - 2, i.e., q*m + q - 1 ≤ q*n
+  have h1 : q * (m + 1) ≤ q * n := Nat.mul_le_mul_left q hmn
+  have h2 : q * (m + 1) = q * m + q := by ring
+  omega
+
+/-- If two orbits share any point, then one starting value lies on the
+    other's orbit. Uses injectivity of Dstep (from Dstep_strictMono):
+    if Dstep^j(m) = Dstep^k(n) with j ≤ k, then applying Dstep⁻¹ j times
+    gives m = Dstep^{k-j}(n). -/
+lemma orbit_shared_point (q m n : ℕ) (hq : q ≥ 2) (j k : ℕ)
+    (h : Diter' j q m = Diter' k q n) :
+    (∃ l, m = Diter' l q n) ∨ (∃ l, n = Diter' l q m) := by
+  have hinj : Function.Injective (Dstep q) := (Dstep_strictMono q hq).injective
+  rcases le_or_gt j k with hjk | hjk
+  · -- j ≤ k: Diter' j q m = Diter' k q n = Diter' j q (Diter' (k - j) q n)
+    left; refine ⟨k - j, ?_⟩
+    have : k = j + (k - j) := by omega
+    rw [this] at h
+    rw [Diter'_add] at h
+    exact (hinj.iterate j) h
+  · -- k < j: symmetric
+    right; refine ⟨j - k, ?_⟩
+    have : j = k + (j - k) := by omega
+    rw [this] at h
+    rw [Diter'_add] at h
+    exact ((hinj.iterate k) h).symm
