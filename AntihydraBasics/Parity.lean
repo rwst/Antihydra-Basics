@@ -261,6 +261,25 @@ lemma Diter_mod_agreement_degrades (N L T M : ℕ)
     (j : ℕ) (hj : j * T > L) (hjN : (j + 1) * T ≤ N + L) :
     Diter (M + j * T) 7 % 2 ^ N ≠ Diter (M + (j + 1) * T) 7 % 2 ^ N := by sorry
 
+/-- **No collision is self-reinforcing.**
+    For any candidate period T ≥ 1 and modulus 2^N with N ≥ 1, the orbit of 7
+    eventually disagrees at distance T. Equivalently, no period T can sustain
+    mod 2^N agreement forever.
+
+    Proof sketch (does NOT require K(3,7) irrationality):
+    1. By `Diter_7_injective`, Diter M 7 ≠ Diter (M+T) 7 for T ≥ 1.
+    2. Since they are distinct naturals, their 2-adic agreement is finite:
+       ∃ M', Diter M 7 ≡ Diter (M+T) 7 mod 2^M' but ≢ mod 2^(M'+1).
+    3. By `Diter_mod_exact`, each period of T steps degrades the agreement
+       by exactly T bits (the 2-adic expansion property).
+    4. After ⌈(M'−N+1)/T⌉ periods, the agreement drops below N bits,
+       giving mod 2^N disagreement.
+
+    This lemma implies both `parity_not_eventually_periodic` and
+    `not_Diter_mod_eventually_periodic` without any irrationality assumption. -/
+lemma Diter_no_self_reinforcing_collision (N T : ℕ) (hN : N ≥ 1) (hT : T ≥ 1) (M : ℕ) :
+    ∃ k ≥ M, Diter k 7 % 2 ^ N ≠ Diter (k + T) 7 % 2 ^ N := by sorry
+
 /-- The map D(x) = ⌈3x/2⌉ modulo 2^N cannot be represented as a finite state machine
     on ZMod (2^N), because D(x + c * 2^N) is not necessarily congruent to D(x) modulo 2^N.
     Specifically, the "carry" from the division by 2 introduces dependence on higher bits. -/
@@ -291,104 +310,6 @@ lemma D_not_well_defined_mod_pow2 (N : ℕ) (hN : N ≥ 1) :
     exact Nat.mod_eq_of_lt (by omega)
   rw [hmod, Nat.zero_mod] at h1
   omega
-
-/-- For `q = 3`, the error term `E(3, x)` is simply `x % 2` for `x ≥ 1`. -/
-lemma E_three_eq (x : ℕ) (hx : x ≥ 1) : E 3 x = x % 2 := by
-  simp only [E]
-  have h1 : 3 - 2 = 1 := rfl
-  have h2 : 3 - 1 = 2 := rfl
-  rw [h1, h2]
-  omega
-
-/-- For `q = 3`, the step-wise error `e_step` is `(D^k(n) % 2) / 2`. -/
-lemma e_step_three_eq (n : ℕ) (k : ℕ) (hn : n ≥ 1) :
-    e_step 3 n k = ((Diter k n % 2 : ℕ) : ℝ) / 2 := by
-  have h_Diter : Diter' k 3 n = Diter k n := Diter'_three k n
-  simp only [e_step, h_Diter]
-  have hDpos : Diter k n ≥ 1 := by
-    rw [← h_Diter]
-    exact Diter'_pos k 3 n (by decide) hn
-  rw [E_three_eq _ hDpos]
-  congr 1
-  norm_num
-
-/-- Summation formula for a sequence that becomes geometric after `M` steps
-    with period `T` and ratio `(2/3)^T`. -/
-lemma sum_periodic_shift (f : ℕ → ℝ) (T M : ℕ) (hT : T > 0)
-    (h_per : ∀ j, f (j + T + M) = f (j + M) * (2/3 : ℝ)^T)
-    (h_sum : Summable f) :
-    ∑' j, f j = (∑ j ∈ Finset.range M, f j) +
-      (∑ j ∈ Finset.range T, f (j + M)) / (1 - (2/3 : ℝ)^T) := by
-  sorry
-
-/-- The `j`-th term of the series for the Odlyzko-Wilf constant `K(3, n)`. -/
-lemma K_summand_three_eq (n : ℕ) (j : ℕ) (hn : n ≥ 1) :
-    K_summand 3 n j = ((Diter j n % 2 : ℕ) : ℝ) / (2 * (3/2 : ℝ) ^ (j + 1)) := by
-  simp only [K_summand]
-  rw [e_step_three_eq n j hn]
-  have hα : α 3 = 3 / 2 := by norm_num [α]
-  rw [hα]
-  ring
-
-/-- If the parity sequence of Diter is eventually periodic, then the Odlyzko-Wilf constant K(3,7) is rational. -/
-lemma parity_periodic_implies_K37_rational (T M : ℕ) (hT : T > 0)
-    (h_per : ∀ k ≥ M, Diter (k + T) 7 % 2 = Diter k 7 % 2) :
-    ∃ p q : ℤ, q ≠ 0 ∧ ¬ Irrational (K_const 3 7) := by
-  have hn : (7 : ℕ) ≥ 1 := by decide
-  have h_sum : Summable (K_summand 3 7) := K_summand_summable 3 7 (by decide)
-  let f := fun j => K_summand 3 7 j
-  have hf_sum : Summable f := h_sum
-  have hf_per : ∀ j, f (j + T + M) = f (j + M) * (2/3 : ℝ)^T := by
-    intro j
-    simp only [f]
-    rw [K_summand_three_eq 7 (j + T + M) hn, K_summand_three_eq 7 (j + M) hn]
-    have h_parity : Diter (j + T + M) 7 % 2 = Diter (j + M) 7 % 2 := by
-      have : j + T + M = (j + M) + T := by omega
-      rw [this]
-      exact h_per (j + M) (by omega)
-    rw [h_parity]
-    have hp : (3/2 : ℝ) ^ (j + T + M + 1) = (3/2 : ℝ) ^ (j + M + 1) * (3/2 : ℝ) ^ T := by
-      rw [← pow_add]
-      congr 1
-      omega
-    rw [hp]
-    have h23 : (2/3 : ℝ) ^ T = 1 / (3/2 : ℝ) ^ T := by
-      rw [← one_div_pow]
-      congr 1
-      norm_num
-    rw [h23]
-    ring
-  have h_K_eval : K_const 3 7 = 7 + ∑' j, f j := rfl
-  have h_shift := sum_periodic_shift f T M hT hf_per hf_sum
-  rw [h_shift] at h_K_eval
-  -- Need to show it's rational
-  sorry
-
-/-- The Odlyzko-Wilf constant K(3,7) is irrational. -/
-lemma K37_irrational :
-    Irrational (K_const 3 7) := by sorry
-
-/-- The parity sequence of Diter is fundamentally not eventually periodic.
-    This is equivalent to the irrationality of the Odlyzko-Wilf constant K(3). -/
-lemma parity_not_eventually_periodic :
-    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 = Diter k 7 % 2 := by
-  intro ⟨T, hT, M, hM⟩
-  have ⟨_, _, _, h_not_irr⟩ := parity_periodic_implies_K37_rational T M hT hM
-  exact h_not_irr K37_irrational
-
-/-- Generalizes the parity non-periodicity: the sequence `Diter k 7` modulo `2^N`
-    is never eventually periodic for any `N ≥ 1`. -/
-lemma not_Diter_mod_eventually_periodic (N : ℕ) (hN : N ≥ 1) :
-    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 ^ N = Diter k 7 % 2 ^ N := by
-  intro ⟨T, hT, M, hM⟩
-  apply parity_not_eventually_periodic
-  use T, hT, M
-  intro k hk
-  have h := hM k hk
-  have h_dvd : 2 ∣ 2 ^ N := dvd_pow_self 2 (by omega)
-  have h_modeq : Diter (k + T) 7 ≡ Diter k 7 [MOD 2 ^ N] := h
-  have h_mod2 : Diter (k + T) 7 ≡ Diter k 7 [MOD 2] := h_modeq.of_dvd h_dvd
-  exact h_mod2
 
 /-- If S = {m | 3 ∣ m ∧ OddCount m = m/3} is infinite but all sufficiently large
     S-elements have Diter odd, we derive a contradiction.
