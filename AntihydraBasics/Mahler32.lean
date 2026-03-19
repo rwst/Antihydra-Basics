@@ -43,21 +43,12 @@ lemma Diter_eq_real_formula (n : ℕ) :
   have h_nonneg : 0 ≤ (D : ℝ) + ∑' (j : ℕ), K_summand 3 D j :=
     add_nonneg (Nat.cast_nonneg _) (tsum_nonneg (fun j => (K_summand_nonneg 3 D j (by omega)).le))
   rw [eq_comm, Nat.floor_eq_iff h_nonneg]
-  constructor
-  · simp only [le_add_iff_nonneg_right]
-    exact tsum_nonneg (fun j => (K_summand_nonneg 3 D j (by omega)).le)
-  · simp only [add_lt_add_iff_left]
-    have hlt := tsum_K_summand_lt 3 D (by omega) hD_pos (by omega)
-    norm_num at hlt
-    exact hlt
+  exact ⟨le_add_of_nonneg_right (tsum_nonneg (fun j => (K_summand_nonneg 3 D j (by omega)).le)),
+    by simp only [add_lt_add_iff_left]; have hlt := tsum_K_summand_lt 3 D (by omega) hD_pos (by omega); norm_num at hlt; exact hlt⟩
 
 /-- D(m) ≥ 5 for all m ≥ 0, since D(0) = 7 and the recurrence is strictly increasing. -/
 lemma Diter_7_ge_5 (m : ℕ) : Diter m 7 ≥ 5 := by
-  have hD_strict : StrictMono D := by
-    intro a b h
-    have := Dstep_strictMono 3 (by omega) h
-    simp only [Dstep_three] at this
-    exact this
+  have hD_strict : StrictMono D := fun a b h => by simpa [Dstep_three] using Dstep_strictMono 3 (by omega) h
   suffices h : Diter m 7 ≥ 7 from by omega
   induction m with
   | zero => simp
@@ -83,9 +74,7 @@ lemma Conj1_iff_deficit_nonnegative :
       by_contra hlt; push_neg at hlt
       have h_curr : h (n + 1) < 0 := hlt
       rw [hstep] at h_curr
-      have hp : Diter n 7 % 2 = 0 ∨ Diter n 7 % 2 = 1 := by
-        have := Nat.mod_lt (Diter n 7) (show 0 < 2 by omega)
-        interval_cases (Diter n 7 % 2) <;> simp [*]
+      have hp : Diter n 7 % 2 = 0 ∨ Diter n 7 % 2 = 1 := by omega
       rcases hp with hp0 | hp1
       · -- If parity is 0: h n - 1 < 0 → h n < 1. Since h n ≥ 0, h n = 0.
         have hn0 : h n = 0 := by linarith
@@ -95,25 +84,14 @@ lemma Conj1_iff_deficit_nonnegative :
         have h_n_nat : n = 3 * OddCount n := by exact_mod_cast h_n_val
         use n
         refine ⟨⟨OddCount n, h_n_nat⟩, ?_⟩
-        constructor
-        · exact Nat.even_iff.mpr hp0
-        · constructor
-          · exact Diter_7_ge_5 n
-          · omega
+        exact ⟨Nat.even_iff.mpr hp0, Diter_7_ge_5 n, by omega⟩
       · -- If parity is 1: h n + 2 < 0 → h n < -2, contradiction
         linarith
   · -- Backward: (∀ n, h(n) ≥ 0) → Conj1
     intro hn_ge ⟨m, h3m, heven, _, hOC⟩
-    have hm0 : h m = 0 := by
-      unfold h; rw [hOC]
-      obtain ⟨k, rfl⟩ := h3m
-      have : (3 * k : ℤ) / 3 = k := by norm_num
-      simp
+    have hm0 : h m = 0 := by unfold h; rw [hOC]; obtain ⟨k, rfl⟩ := h3m; push_cast; omega
     have hm1 : h (m + 1) = -1 := by
-      rw [hstep m, hm0]
-      have : (Diter m 7 % 2 : ℤ) = 0 := by exact_mod_cast Nat.even_iff.mp heven
-      rw [this]
-      simp
+      rw [hstep m, hm0]; simp [show (Diter m 7 % 2 : ℤ) = 0 from by exact_mod_cast Nat.even_iff.mp heven]
     have := hn_ge (m + 1)
     linarith
 
@@ -134,27 +112,17 @@ theorem Conj1_iff_K37_in_M_1_3 :
   · intro h
     refine ⟨hK_pos, fun n => ?_⟩
     have h_eq : ∀ i ∈ Finset.range n, (⌊K_const 3 7 * (3 / 2 : ℝ) ^ i⌋₊ % 2 : ℤ) = (Diter i 7 % 2 : ℤ) := by
-      intro i _
-      have := Diter_eq_real_formula i
-      push_cast at this
-      exact (congr_arg (fun x => x % 2) this).symm
+      intro i _; simp [Diter_eq_real_formula i]
     have h_sum : (∑ i ∈ Finset.range n, (⌊K_const 3 7 * (3 / 2 : ℝ) ^ i⌋₊ % 2 : ℤ)) = (OddCount n : ℤ) := by
-      unfold OddCount
-      push_cast
-      exact Finset.sum_congr rfl h_eq
+      unfold OddCount; push_cast; exact Finset.sum_congr rfl h_eq
     rw [h_sum]
     exact h n
   · intro h n
     obtain ⟨_, hwalk⟩ := h
     have h_eq : ∀ i ∈ Finset.range n, (Diter i 7 % 2 : ℤ) = (⌊K_const 3 7 * (3 / 2 : ℝ) ^ i⌋₊ % 2 : ℤ) := by
-      intro i _
-      have := Diter_eq_real_formula i
-      push_cast at this
-      exact congr_arg (fun x => x % 2) this
+      intro i _; simp [Diter_eq_real_formula i]
     have h_sum : (OddCount n : ℤ) = (∑ i ∈ Finset.range n, (⌊K_const 3 7 * (3 / 2 : ℝ) ^ i⌋₊ % 2 : ℤ)) := by
-      unfold OddCount
-      push_cast
-      exact Finset.sum_congr rfl h_eq
+      unfold OddCount; push_cast; exact Finset.sum_congr rfl h_eq
     specialize hwalk n
     rw [← h_sum] at hwalk
     exact hwalk
