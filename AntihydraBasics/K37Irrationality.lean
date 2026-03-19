@@ -134,19 +134,19 @@ lemma Diter_nonperiodic_implies_K37_irrational
 lemma K37_irrational :
     Irrational (K_const 3 7) := by sorry
 
-/-- The parity sequence of Diter is fundamentally not eventually periodic.
-    This is equivalent to the irrationality of the Odlyzko-Wilf constant K(3). -/
-lemma parity_not_eventually_periodic :
+/-- The parity sequence of Diter is fundamentally not eventually periodic,
+    assuming the irrationality of the Odlyzko-Wilf constant K(3,7). -/
+lemma parity_not_eventually_periodic (h_irr : Irrational (K_const 3 7)) :
     ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 = Diter k 7 % 2 := by
   intro ⟨T, hT, M, hM⟩
-  exact (parity_periodic_implies_K37_rational T M hT hM) K37_irrational
+  exact (parity_periodic_implies_K37_rational T M hT hM) h_irr
 
 /-- Generalizes the parity non-periodicity: the sequence `Diter k 7` modulo `2^N`
-    is never eventually periodic for any `N ≥ 1`. -/
-lemma not_Diter_mod_eventually_periodic (N : ℕ) (hN : N ≥ 1) :
+    is never eventually periodic for any `N ≥ 1`, assuming K(3,7) is irrational. -/
+lemma not_Diter_mod_eventually_periodic (h_irr : Irrational (K_const 3 7)) (N : ℕ) (hN : N ≥ 1) :
     ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 ^ N = Diter k 7 % 2 ^ N := by
   intro ⟨T, hT, M, hM⟩
-  apply parity_not_eventually_periodic
+  apply parity_not_eventually_periodic h_irr
   use T, hT, M
   intro k hk
   have h := hM k hk
