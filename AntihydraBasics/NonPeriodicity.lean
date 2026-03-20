@@ -36,21 +36,13 @@ lemma D_mod_determined (N a b : ℕ) (h : a % 2 ^ (N + 1) = b % 2 ^ (N + 1)) :
     Nat.ModEq.add (Nat.ModEq.mul rfl h) rfl
   rw [hcong]
 
-/-- If d | m, then (a % m) % d = a % d. -/
-lemma mod_mod_of_dvd {a d m : ℕ} (hd : d ∣ m) : (a % m) % d = a % d :=
-  Nat.ModEq.of_dvd hd (Nat.mod_mod a m)
-
 /-- If a ≡ b mod m and d | m, then a ≡ b mod d. -/
 lemma mod_eq_of_mod_eq_of_dvd {a b d m : ℕ} (hd : d ∣ m) (h : a % m = b % m) :
-    a % d = b % d := by
-  nth_rw 1 [← mod_mod_of_dvd hd (a := a)]
-  rw [h]
-  exact mod_mod_of_dvd hd (a := b)
+    a % d = b % d :=
+  Nat.ModEq.of_dvd hd h
 
 /-- For any x, (3*x+1) % 2 = (x+1) % 2. -/
-lemma three_mul_add_one_mod2 (x : ℕ) : (3 * x + 1) % 2 = (x + 1) % 2 := by
-  rw [Nat.add_mod, Nat.mul_mod]
-  norm_num
+lemma three_mul_add_one_mod2 (x : ℕ) : (3 * x + 1) % 2 = (x + 1) % 2 := by omega
 
 /-- Parity of (3*x+1) depends only on x mod 2^(N+1), not x mod 2^(N+2).
     If a ≡ b mod 2^(N+1) then (3*a+1) % 2^(N+2) ≡ (3*b+1) % 2^(N+2) mod 2. -/
@@ -58,16 +50,15 @@ lemma three_mul_add_one_mod2_agree (N a b : ℕ) (h : a % 2 ^ (N + 1) = b % 2 ^ 
     (3 * a + 1) % 2 ^ (N + 2) % 2 = (3 * b + 1) % 2 ^ (N + 2) % 2 := by
   have h2ab : a % 2 = b % 2 :=
     mod_eq_of_mod_eq_of_dvd ⟨2 ^ N, by ring⟩ h
-  rw [mod_mod_of_dvd (m := 2 ^ (N + 2)) ⟨2 ^ (N + 1), by ring⟩,
-      mod_mod_of_dvd (m := 2 ^ (N + 2)) ⟨2 ^ (N + 1), by ring⟩]
+  rw [Nat.mod_mod_of_dvd _ ⟨2 ^ (N + 1), by ring⟩,
+      Nat.mod_mod_of_dvd _ ⟨2 ^ (N + 1), by ring⟩]
   rw [three_mul_add_one_mod2, three_mul_add_one_mod2]
   omega
 
 /-- If u / 2 = v / 2 and u % 2 = v % 2, then u = v.
     This is the injectivity of the map x ↦ (x/2, x%2). -/
 lemma eq_of_div2_and_mod2 (u v : ℕ) (hdiv : u / 2 = v / 2) (hmod : u % 2 = v % 2) :
-    u = v := by
-  rw [← Nat.div_add_mod u 2, ← Nat.div_add_mod v 2, hdiv, hmod]
+    u = v := by omega
 
 /-- 3 is coprime to any power of 2. -/
 lemma coprime_three_pow_two (n : ℕ) : Nat.Coprime 3 (2 ^ n) :=
@@ -163,60 +154,44 @@ where
     have ih := go (N + 1) k a b h_agree' h_disagree'
     exact D_mod_exact N (Diter k a) (Diter k b) ih.1 ih.2
 
-lemma n_lt_D_n (n : ℕ) (hn : n ≥ 1) : n < D n := by
-  have h_eq : D n = (3 * n + 1) / 2 := rfl
-  rw [h_eq]
-  omega
+lemma n_lt_D_n (n : ℕ) (hn : n ≥ 1) : n < D n := by simp [D]; omega
 
-lemma Diter_7_pos (k : ℕ) : Diter k 7 ≥ 1 := by
+/-- The iterated orbit of any m ≥ 1 stays positive. -/
+lemma Diter_pos {m : ℕ} (hm : m ≥ 1) (k : ℕ) : Diter k m ≥ 1 := by
   induction k with
-  | zero => simp
-  | succ k ih =>
-    have h_eq : Diter (k + 1) 7 = D (Diter k 7) := Diter_succ k 7
-    rw [h_eq]
-    have h_lt := n_lt_D_n _ ih
-    omega
+  | zero => exact hm
+  | succ k ih => rw [Diter_succ]; linarith [n_lt_D_n (Diter k m) ih]
 
-/-- The orbit of 7 under D is strictly increasing.
-    Since D(n) > n for all n ≥ 1 (as (3n+1)/2 > n iff n > -1)
-    and Diter k 7 ≥ 7 ≥ 1 for all k. -/
-lemma Diter_7_strictMono : StrictMono (fun k => Diter k 7) := by
-  have h_step : ∀ k, Diter k 7 < Diter (k + 1) 7 := by
-    intro k
-    rw [Diter_succ]
-    exact n_lt_D_n _ (Diter_7_pos k)
-  intro m n hmn
-  induction n with
-  | zero => omega
-  | succ n ih =>
-    rcases lt_or_eq_of_le (Nat.le_of_lt_succ hmn) with hlt | heq
-    · exact lt_trans (ih hlt) (h_step n)
-    · subst heq
-      exact h_step m
+/-- The orbit of any m ≥ 1 under D is strictly increasing. -/
+lemma Diter_strictMono {m : ℕ} (hm : m ≥ 1) : StrictMono (fun k => Diter k m) :=
+  strictMono_nat_of_lt_succ fun k => by rw [Diter_succ]; exact n_lt_D_n _ (Diter_pos hm k)
 
-/-- The orbit of 7 never revisits any value. Corollary of strict monotonicity. -/
+/-- The orbit of any m ≥ 1 never revisits any value. -/
+lemma Diter_injective {m : ℕ} (hm : m ≥ 1) : Function.Injective (fun k => Diter k m) :=
+  (Diter_strictMono hm).injective
+
+lemma Diter_7_pos (k : ℕ) : Diter k 7 ≥ 1 := Diter_pos (by decide) k
+
+lemma Diter_7_strictMono : StrictMono (fun k => Diter k 7) := Diter_strictMono (by decide)
+
 lemma Diter_7_injective : Function.Injective (fun k => Diter k 7) :=
   Diter_7_strictMono.injective
 
-lemma Diter_add (a b n : ℕ) : Diter (a + b) n = Diter a (Diter b n) := by
-  induction a with
-  | zero => simp
-  | succ a ih =>
-    have : a + 1 + b = a + b + 1 := by omega
-    rw [this, Diter_succ, ih, Diter_succ]
+lemma Diter_add (a b n : ℕ) : Diter (a + b) n = Diter a (Diter b n) :=
+  Function.iterate_add_apply D a b n
 
 /-- Pigeonhole gives finite-stretch mod-periodicity: for any N and any desired
     stretch length L, there exist M and T > 0 such that the orbit mod 2^N
     repeats with period T for at least L consecutive steps starting at M.
 
     Proof: choose precision P = N + L. Among the first 2^P + 1 orbit values,
-    pigeonhole gives i < j with Diter i 7 ≡ Diter j 7 mod 2^P. Set T = j - i,
+    pigeonhole gives i < j with Diter i m ≡ Diter j m mod 2^P. Set T = j - i,
     M = i. Then Diter_mod_determined gives mod 2^N agreement for P - N = L steps. -/
-lemma Diter_mod_periodic_finite_stretch (N L : ℕ) :
-    ∃ T > 0, ∃ M, ∀ m ≤ L,
-      Diter (M + m + T) 7 % 2 ^ N = Diter (M + m) 7 % 2 ^ N := by
+lemma Diter_mod_periodic_finite_stretch {m : ℕ} (hm : m ≥ 1) (N L : ℕ) :
+    ∃ T > 0, ∃ M, ∀ n ≤ L,
+      Diter (M + n + T) m % 2 ^ N = Diter (M + n) m % 2 ^ N := by
   let P := N + L
-  let f : Fin (2^P + 1) → Fin (2^P) := fun k => ⟨Diter k.val 7 % 2^P, Nat.mod_lt _ (by positivity)⟩
+  let f : Fin (2^P + 1) → Fin (2^P) := fun k => ⟨Diter k.val m % 2^P, Nat.mod_lt _ (by positivity)⟩
   have h_pigeon : ∃ i j : Fin (2^P + 1), i < j ∧ f i = f j := by
     obtain ⟨i, j, hneq, heq⟩ := Fintype.exists_ne_map_eq_of_card_lt f (by simp)
     rcases lt_trichotomy i j with hlt | heq2 | hgt
@@ -299,23 +274,13 @@ lemma Diter_mod_agreement_degrades (N L T M : ℕ) (hT : T ≥ 1)
     apply Nat.pow_dvd_pow _ h_N_prime_le
   exact h_disagree_N_prime h_eq_N_prime
 
-lemma lt_two_pow (n : ℕ) : n < 2 ^ n := by
-  induction n with
-  | zero => decide
-  | succ n ih =>
-    have : 2 ^ (n + 1) = 2 ^ n + 2 ^ n := by
-      rw [Nat.pow_succ]
-      omega
-    rw [this]
-    omega
-
 lemma exists_exact_mod_pow_two_agreement {a b : ℕ} (h : a ≠ b) :
     ∃ m : ℕ, a % 2 ^ m = b % 2 ^ m ∧ a % 2 ^ (m + 1) ≠ b % 2 ^ (m + 1) := by
   have h_diff_mod : ∃ k, a % 2 ^ k ≠ b % 2 ^ k := by
     use max a b + 1
     have h1_le : a ≤ max a b := le_max_left a b
     have h1_lt : max a b < 2 ^ (max a b + 1) := by
-      have := lt_two_pow (max a b + 1)
+      have := Nat.lt_two_pow_self (n := max a b + 1)
       omega
     have h1 : a < 2 ^ (max a b + 1) := by omega
     have h2_le : b ≤ max a b := le_max_right a b
@@ -344,9 +309,8 @@ lemma exists_exact_mod_pow_two_agreement {a b : ℕ} (h : a ≠ b) :
     exact hm'_in
 
 lemma mod_eq_of_le_pow (a b m n : ℕ) (h : a % 2 ^ n = b % 2 ^ n) (hmn : m ≤ n) :
-    a % 2 ^ m = b % 2 ^ m := by
-  have hdvd : 2 ^ m ∣ 2 ^ n := Nat.pow_dvd_pow 2 hmn
-  exact Nat.ModEq.of_dvd hdvd h
+    a % 2 ^ m = b % 2 ^ m :=
+  Nat.ModEq.of_dvd (Nat.pow_dvd_pow 2 hmn) h
 
 /-- **No collision is self-reinforcing.**
     For any candidate period T ≥ 1 and modulus 2^N with N ≥ 1, the orbit of 7

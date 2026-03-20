@@ -65,6 +65,7 @@ This direction is clean and the structure parallels the paper exactly: the densi
 The original paper's tool was the *multiplicative bound* T^(k)(m) ≤ (3.1)^{k₁}/2^k · m, which shrinks to zero when k₁/k < ln 2 / ln 3.1 ≈ 0.614.  In our setting the map is uniformly expanding, so no single-step contraction is available.  We propose **three variant strategies**.
 
 ---
+NOTE: VARIANTS A AND B ARE FUTILE
 
 ### Variant A:  Contrapositive via the Running Density
 

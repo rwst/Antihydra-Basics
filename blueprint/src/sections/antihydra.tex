@@ -1,0 +1,98 @@
+\label{sec:antihydra}
+
+In this section, we define the Antihydra Turing machine and prove that its halting behavior is equivalent to a specific condition on the iterates of a mathematical map $A: \mathbb{N} \times \mathbb{N} \to \mathbb{N} \times \mathbb{N}$.
+
+\subsection{The Antihydra Turing Machine}
+
+The Antihydra machine is a 6-state, 2-symbol Turing machine discovered by Shawn Ligocki. It is defined by the following transition table.
+
+\begin{definition}
+  \label{def:transition}
+  \lean{Antihydra.transition}
+  \leanok
+  The state set is $\{A, B, C, D, E, F\}$ and the tape alphabet is $\{0, 1\}$. The transition function $\delta: Q \times \Sigma \to (Q \cup \{HALT\}) \times \Sigma \times \{L, R\}$ is given by:
+  \begin{center}
+  \begin{tabular}{|c|c||c|c|c|}
+    \hline
+    State & Symbol & Next State & Write & Move \\
+    \hline
+    A & 0 & B & 1 & R \\
+    A & 1 & A & 1 & R \\
+    B & 0 & C & 0 & L \\
+    B & 1 & E & 1 & L \\
+    C & 0 & D & 1 & L \\
+    C & 1 & C & 1 & L \\
+    D & 0 & A & 1 & L \\
+    D & 1 & B & 0 & L \\
+    E & 0 & F & 1 & L \\
+    E & 1 & E & 1 & R \\
+    F & 0 & HALT & 0 & R \\
+    F & 1 & A & 0 & R \\
+    \hline
+  \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{definition}
+  \label{def:Config}
+  \lean{Antihydra.Config}
+  \leanok
+  A configuration of the machine consists of the current state, the contents of the tape to the left and right of the head, and the symbol currently under the head.
+\end{definition}
+
+\subsection{The Mathematical Model}
+
+The high-level behavior of the Antihydra machine can be modeled as a dynamical system on pairs of natural numbers.
+
+\begin{definition}
+  \label{def:A_map}
+  \lean{Antihydra.A}
+  \leanok
+  The map $A: \mathbb{N} \times \mathbb{N} \to \mathbb{N} \times \mathbb{N}$ is defined for $(a, b) \in \mathbb{N}^2$ by:
+  \[
+  A(a, b) = \begin{cases}
+    (3 \lfloor a/2 \rfloor + 2, b + 2) & \text{if } a \text{ is even}, \\
+    (3 \lfloor a/2 \rfloor + 3, b - 1) & \text{if } a \text{ is odd}.
+  \end{cases}
+  \]
+\end{definition}
+
+\begin{definition}
+  \label{def:mathHaltingCondition}
+  \lean{Antihydra.mathHaltingCondition}
+  \leanok
+  The mathematical system halts if it reaches a state $(a, b)$ such that $a$ is odd, $a \ge 3$, and $b = 0$.
+\end{definition}
+
+\subsection{Equivalence of Halting}
+
+The core result is that the Turing machine simulates the mathematical map $A$. This is proven by identifying a family of "clean" configurations that correspond to the state $(a, b)$.
+
+\begin{definition}
+  \label{def:P_Config_Pad}
+  \lean{Antihydra.P_Config_Pad}
+  \leanok
+  For $a, b, n, p \in \mathbb{N}$, the configuration $P(b, a, n, p)$ corresponds to state $E$, reading symbol 0, with the left tape containing $1^a 0 1^b$ and the right tape containing $1^n 0^p$.
+\end{definition}
+
+\begin{theorem}
+  \label{thm:tm_simulates_math}
+  \lean{Antihydra.tm_simulates_math}
+  \leanok
+  If the machine is in a "clean" loop configuration corresponding to $(a, b)$, then after some number of steps $k > 0$, it will either reach the HALT state (if the math model halts) or return to a "clean" loop configuration corresponding to $A(a, b)$.
+  \begin{proof}
+    \leanok
+    The proof proceeds by exhaustive analysis of the machine's execution paths (macro-steps). We show that for even $a$, the machine increases $b$ and performs a $(3/2)$ growth on $a$ (with an offset). For odd $a$, it decreases $b$ and performs a $(3/2)$ growth on $a$, unless $b=0$, in which case it transitions to state $F$ and halts.
+  \end{proof}
+\end{theorem}
+
+\begin{theorem}
+  \label{thm:antihydra_halts_iff}
+  \lean{Antihydra.antihydra_halts_iff}
+  \leanok
+  The Antihydra Turing machine starting from a blank tape halts if and only if there exists some iteration $i$ such that $A^i(8, 2)$ satisfies the mathematical halting condition.
+  \begin{proof}
+    \leanok
+    Explicit simulation for 58 steps shows that the machine reaches the configuration $P(2, 8, 0, 0)$, which corresponds to the mathematical state $(8, 2)$. By Theorem~\ref{thm:tm_simulates_math}, the machine then follows the orbit of $(8, 2)$ under $A$ until it satisfies the halting condition or continues indefinitely.
+  \end{proof}
+\end{theorem}

@@ -588,12 +588,8 @@ lemma isValidLoopStart_eq_P_Config_Pad (c : Config) (hm : isValidLoopStart c) :
   rcases c with ⟨state, left, head, right⟩
   unfold isValidLoopStart at hm
   rcases hm with ⟨hstate, hhead, hright, ha, ⟨b, hb⟩⟩
-  have ha_eq := list_eq_repeatOne_drop left
   have hleft_full : left = repeatOne (countOnes left) ++ [false] ++ repeatOne b := by
-    calc left = repeatOne (countOnes left) ++ left.drop (countOnes left) := ha_eq
-         _ = repeatOne (countOnes left) ++ (false :: repeatOne b) := by rw [hb]
-         _ = repeatOne (countOnes left) ++ ([false] ++ repeatOne b) := by rfl
-         _ = repeatOne (countOnes left) ++ [false] ++ repeatOne b := by rw [List.append_assoc]
+    rw [list_eq_repeatOne_drop left, hb]; simp [List.append_assoc]
 
   have hright_full : right = repeatFalse right.length := all_false_eq_repeatFalse _ hright
 
@@ -1066,19 +1062,11 @@ theorem tm_even_full (b n p : Nat) :
   have h_multi : run (P_Config_Pad b (2*n+2) 0 p') (n * (3*n+9))
       = P_Config_Pad b 2 (3*n) (p+2) := by
     have h := tm_P_multistep b 0 0 (p+1) n
-    have h1 : 0 + 2 + 2 * n = 2 * n + 2 := by omega
-    have h2 : p + 1 + 1 + n = p' := by omega
-    have h3 : n * (2 * 0 + 3 * n + 9) = n * (3 * n + 9) := by ring
-    have h4 : 0 + 2 = 2 := by omega
-    have h5 : 0 + 3 * n = 3 * n := by omega
-    have h6 : p + 1 + 1 = p + 2 := by omega
-    rw [h1, h2, h3, h4, h5, h6] at h; exact h
+    simp only [show 0 + 2 + 2 * n = 2 * n + 2 from by omega, show p + 1 + 1 + n = p' from by omega,
+      show (0:ℕ) + 3 * n = 3 * n from by omega, show p + 1 + 1 = p + 2 from by omega] at h; exact h
   have h_end : run (P_Config_Pad b 2 (3*n) (p+2)) (9*n + 2*b + 26)
       = P_Config_Pad (b+2) (3*n+5) 0 p := by
-    have h := tm_even_endgame_to_loop b (3*n) p
-    have h1 : 3 * (3 * n) + 2 * b + 26 = 9 * n + 2 * b + 26 := by ring
-    have h2 : 3 * n + 5 = 3 * n + 5 := rfl
-    rw [h1] at h; exact h
+    have h := tm_even_endgame_to_loop b (3*n) p; ring_nf at h ⊢; exact h
   have h_padded : run (P_Config_Pad b (2*n+2) 0 p') k
       = P_Config_Pad (b+2) (3*n+5) 0 p := by
     show run (P_Config_Pad b (2*n+2) 0 p') (n*(3*n+9) + (9*n+2*b+26)) = _
@@ -1106,18 +1094,12 @@ theorem tm_odd_halt_ex (n p : Nat) :
   have h_multi : run (P_Config_Pad 0 (2*n+3) 0 p') (n * (3*n+9))
       = P_Config_Pad 0 3 (3*n) (p+2) := by
     have h := tm_P_multistep 0 1 0 (p+1) n
-    have h1 : 1 + 2 + 2 * n = 2 * n + 3 := by omega
-    have h2 : p + 1 + 1 + n = p' := by omega
-    have h3 : n * (2 * 0 + 3 * n + 9) = n * (3 * n + 9) := by ring
-    have h4 : 1 + 2 = 3 := by omega
-    have h5 : 0 + 3 * n = 3 * n := by omega
-    have h6 : p + 1 + 1 = p + 2 := by omega
-    rw [h1, h2, h3, h4, h5, h6] at h; exact h
+    simp only [show 1 + 2 + 2 * n = 2 * n + 3 from by omega, show p + 1 + 1 + n = p' from by omega,
+      show 1 + 2 = 3 from by omega, show (0:ℕ) + 3 * n = 3 * n from by omega,
+      show p + 1 + 1 = p + 2 from by omega] at h; exact h
   -- Odd halt endgame
   have h_end : (run (P_Config_Pad 0 3 (3*n) (p+2)) (6*n+12)).state = none := by
-    have h := tm_odd_halt_endgame (3*n) p
-    have h1 : 2 * (3 * n) + 12 = 6 * n + 12 := by ring
-    rw [h1] at h; exact h
+    have h := tm_odd_halt_endgame (3*n) p; ring_nf at h ⊢; exact h
   -- Combine
   have h_padded : (run (P_Config_Pad 0 (2*n+3) 0 p') k).state = none := by
     show (run (P_Config_Pad 0 (2*n+3) 0 p') (n*(3*n+9) + (6*n+12))).state = none
@@ -1140,19 +1122,13 @@ theorem tm_odd_continue (b' n p : Nat) :
   have h_multi : run (P_Config_Pad (b'+1) (2*n+3) 0 p') (n * (3*n+9))
       = P_Config_Pad (b'+1) 3 (3*n) (p+2) := by
     have h := tm_P_multistep (b'+1) 1 0 (p+1) n
-    have h1 : 1 + 2 + 2 * n = 2 * n + 3 := by omega
-    have h2 : p + 1 + 1 + n = p' := by omega
-    have h3 : n * (2 * 0 + 3 * n + 9) = n * (3 * n + 9) := by ring
-    have h4 : 1 + 2 = 3 := by omega
-    have h5 : 0 + 3 * n = 3 * n := by omega
-    have h6 : p + 1 + 1 = p + 2 := by omega
-    rw [h1, h2, h3, h4, h5, h6] at h; exact h
+    simp only [show 1 + 2 + 2 * n = 2 * n + 3 from by omega, show p + 1 + 1 + n = p' from by omega,
+      show 1 + 2 = 3 from by omega, show (0:ℕ) + 3 * n = 3 * n from by omega,
+      show p + 1 + 1 = p + 2 from by omega] at h; exact h
   -- Odd endgame: P_Config_Pad (b'+1) 3 (3*n) (p+2) → P_Config_Pad b' (3*n+6) 0 p
   have h_end : run (P_Config_Pad (b'+1) 3 (3*n) (p+2)) (9*n+20)
       = P_Config_Pad b' (3*n+6) 0 p := by
-    have h := tm_odd_endgame b' (3*n) p
-    have h1 : 3 * (3 * n) + 20 = 9 * n + 20 := by ring
-    rw [h1] at h; exact h
+    have h := tm_odd_endgame b' (3*n) p; ring_nf at h ⊢; exact h
   -- Combine
   have h_padded : run (P_Config_Pad (b'+1) (2*n+3) 0 p') k
       = P_Config_Pad b' (3*n+6) 0 p := by

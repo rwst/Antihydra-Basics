@@ -68,14 +68,7 @@ lemma Dstep_exact (q n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) :
 /-- Dstep preserves positivity: n ≥ 1 → Dstep q n ≥ 1 for q ≥ 2. -/
 lemma Dstep_pos (q n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) : Dstep q n ≥ 1 := by
   have h := Dstep_exact q n hq hn
-  -- Dstep q n * (q - 1) = q * n + E q n ≥ q * n ≥ 2
-  -- So Dstep q n * (q - 1) ≥ 1, hence Dstep q n ≥ 1
-  by_contra hlt; push_neg at hlt
-  have : Dstep q n = 0 := by omega
-  rw [this] at h; simp at h
-  -- h : q * n + E q n = 0, but q * n ≥ 2
-  have : q * n ≥ 2 * 1 := Nat.mul_le_mul hq hn
-  omega
+  nlinarith [E_le q n hq, Nat.mul_le_mul hq hn]
 
 /-- Diter' preserves positivity by induction. -/
 lemma Diter'_pos (k q n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) : Diter' k q n ≥ 1 := by
@@ -398,15 +391,10 @@ lemma tsum_K_summand_lt (q : ℕ) (n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) (hq3 :
     intro m; induction m with
     | zero => simp
     | succ m ih =>
-      have hrec := hy_rec m
       calc y (m + 1) * (q - 1) ^ (m + 1)
-          = y (m + 1) * ((q - 1) ^ m * (q - 1)) := by rw [pow_succ]
-        _ = y (m + 1) * (q - 1) * (q - 1) ^ m := by ring
-        _ = q * y m * (q - 1) ^ m := by rw [hrec]
-        _ = q * (y m * (q - 1) ^ m) := by ring
-        _ = q * (y 0 * q ^ m) := by rw [ih]
-        _ = y 0 * (q ^ m * q) := by ring
-        _ = y 0 * q ^ (m + 1) := by rw [pow_succ]
+          = y (m + 1) * (q - 1) * (q - 1) ^ m := by rw [pow_succ]; ring
+        _ = q * y m * (q - 1) ^ m := by rw [hy_rec m]
+        _ = y 0 * q ^ (m + 1) := by nlinarith [ih, pow_succ q m]
   -- Since gcd(q-1, q) = 1, (q-1)^m | y 0 for all m
   have hcop : Nat.Coprime (q - 1) q := by
     rw [Nat.Coprime, Nat.gcd_comm]
@@ -425,12 +413,7 @@ lemma tsum_K_summand_lt (q : ℕ) (n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) (hq3 :
   -- But (q-1)^m → ∞, so for large m this fails
   have := this (y 0 + 1)
   have : (q - 1) ^ (y 0 + 1) ≥ 2 ^ (y 0 + 1) := Nat.pow_le_pow_left hqm1_ge2 _
-  have : 2 ^ (y 0 + 1) > y 0 := by
-    induction (y 0) with
-    | zero => simp
-    | succ k ih =>
-      have : 2 ^ (k + 1 + 1) = 2 * 2 ^ (k + 1) := by ring
-      omega
+  have : 2 ^ (y 0 + 1) > y 0 := by linarith [Nat.lt_two_pow_self (n := y 0 + 1)]
   omega
 
 /-- K_const - u_seq < q - 2 for q ≥ 3. -/
@@ -449,9 +432,7 @@ lemma K_sub_u_lt (q : ℕ) (n : ℕ) (k : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) (hq
 
 /-- For q = 2, all e_step are zero. -/
 lemma e_step_zero_of_q2 (n : ℕ) (k : ℕ) :
-    e_step 2 n k = 0 := by
-  simp only [e_step, E_two]
-  simp
+    e_step 2 n k = 0 := by simp [e_step, E_two]
 
 /-- For q = 2, K_summand is zero. -/
 lemma K_summand_zero_of_q2 (n : ℕ) (k : ℕ) :
@@ -545,7 +526,6 @@ theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
         have : (q : ℝ) ≥ 3 := by exact_mod_cast hq3
         simp; linarith⟩
   · -- n ≥ 1
-    have hn' : n ≥ 1 := hn
     -- Use K = K_const q n
     refine ⟨K_const q n, fun k => ?_⟩
     -- Note: α q = q / (q - 1)
@@ -555,7 +535,7 @@ theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
       intro hq2; subst hq2
       -- ε = Diter' k 2 n - K_const 2 n * 2^k
       show (Diter' k 2 n : ℝ) - K_const 2 n * (2 / (2 - 1)) ^ k = 0
-      rw [K_const_q2 n, Diter'_two k n hn']
+      rw [K_const_q2 n, Diter'_two k n hn]
       push_cast; ring
     · -- q ≥ 3 case
       intro hq3
@@ -564,9 +544,8 @@ theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
         -- Equivalently: K * α^k - D_k < (q-2)
         -- Equivalently: (K - u_k) * α^k < (q-2) [since D_k = u_k * α^k]
         -- Follows from K - u_k < q - 2 and α^k ≥ 1
-        rw [show -((q : ℝ) - 2) = -(((q : ℝ) - 2)) from rfl]
         rw [← hα_eq]
-        have hKu := K_sub_u_lt q n k hq hn' hq3
+        have hKu := K_sub_u_lt q n k hq hn hq3
         -- K - u_k < q-2, and D_k - K*α^k = -(K - u_k) * α^k... no
         -- D_k = u_k * α^k, so D_k - K*α^k = (u_k - K)*α^k
         have hαk_pos : (α q) ^ k > 0 := pow_pos (α_pos q hq) k
@@ -577,8 +556,8 @@ theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
         -- (u_k - K) * α^k > -(q-2), i.e., (K - u_k) * α^k < q-2
         -- By K_tail_eq_shifted, (K - u_k) * α^k = ∑' j, K_summand q (Diter' k q n) j
         -- By tsum_K_summand_lt, this is < q - 2
-        have htail := K_tail_eq_shifted q n k hq hn'
-        have hDk_pos := Diter'_pos k q n hq hn'
+        have htail := K_tail_eq_shifted q n k hq hn
+        have hDk_pos := Diter'_pos k q n hq hn
         have hlt := tsum_K_summand_lt q (Diter' k q n) hq hDk_pos hq3
         linarith
       · -- ε ≤ 0, i.e., D_k ≤ K * α^k
@@ -588,7 +567,7 @@ theorem Diter'_asymptotic (q : ℕ) (hq : q ≥ 2) (n : ℕ) :
           simp [u_seq]; rw [div_mul_cancel₀ _ hαk_pos.ne']]
         rw [show u_seq q n k * (α q) ^ k - K_const q n * (α q) ^ k =
           (u_seq q n k - K_const q n) * (α q) ^ k from by ring]
-        have huk_le := u_seq_le_K q n k hq hn'
+        have huk_le := u_seq_le_K q n k hq hn
         nlinarith
 
 /-- For q ≤ 3 (i.e. q = 2 or q = 3), Diter' is exactly the floor of K · α^k.

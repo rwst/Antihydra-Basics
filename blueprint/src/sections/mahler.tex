@@ -1,0 +1,110 @@
+\label{sec:mahler}
+
+In this section, we relate the avoidance condition (Conjecture 1) to the membership of the asymptotic constant $K_3(7)$ in a generalized Mahler set.
+
+\begin{definition}
+  \label{def:OddCount}
+  \lean{OddCount}
+  \leanok
+  For $n \in \mathbb{N}$, we define $O(n)$ as the count of odd values among the first $n$ iterates of $D$ starting from $7$:
+  \[ O(n) = \sum_{i=0}^{n-1} (D_i(7) \pmod 2). \]
+\end{definition}
+
+\begin{definition}
+  \label{def:oddDensity}
+  \lean{oddDensity}
+  \leanok
+  The running odd density $\rho(n)$ is defined as:
+  \[ \rho(n) = \frac{O(n)}{n}. \]
+\end{definition}
+
+\begin{definition}
+  \label{def:Conj1}
+  \lean{Conj1}
+  \leanok
+  Conjecture 1 states that there is no $m \equiv 0 \pmod 3$ such that $D_m(7)$ is even, $D_m(7) \ge 5$, and $O(m) = m/3$.
+\end{definition}
+
+\begin{definition}
+  \label{def:M_1_3}
+  \lean{M_1_3}
+  \leanok
+  The Generalized Mahler Set $\mathcal{M}_{1/3}$ is the set of all real numbers $\alpha > 0$ such that the deficit walk $h_\alpha(n)$ never goes strictly negative:
+  \[ \mathcal{M}_{1/3} = \{ \alpha > 0 \mid \forall n \in \mathbb{N}, 3 \left( \sum_{i=0}^{n-1} \lfloor \alpha (3/2)^i \rfloor \pmod 2 \right) - n \ge 0 \}. \]
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:Diter_eq_real_formula}
+  \lean{Diter_eq_real_formula}
+  \leanok
+  For all $n \in \mathbb{N}$, the discrete sequence $D_n(7)$ matches the real formula:
+  \[ D_n(7) = \lfloor K_3(7) (3/2)^n \rfloor. \]
+  \begin{proof}
+    \leanok
+    This is a specific instantiation of Corollary~\ref{cor:Diter'_eq_floor} for $q=3$ and $n=7$.
+    The proof in Lean verifies that the error between $D_n(7)$ and $K_3(7)(3/2)^n$ is within the range $(-1, 0]$, which ensures the floor relationship.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:Diter_7_ge_5}
+  \lean{Diter_7_ge_5}
+  \leanok
+  For all $m \in \mathbb{N}$, $D_m(7) \ge 5$.
+  \begin{proof}
+    \leanok
+    Since $D_0(7) = 7$ and $D$ is strictly increasing (Lemma~\ref{lemma:Dstep_strictMono}), we have $D_m(7) \ge 7$ for all $m \ge 0$, which is strictly greater than 5.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:Conj1_iff_deficit_nonnegative}
+  \lean{Conj1_iff_deficit_nonnegative}
+  \leanok
+  Conjecture 1 is equivalent to the condition that the deficit walk $h(n) = 3 O(n) - n$ is non-negative for all $n \in \mathbb{N}$.
+  \begin{proof}
+    \leanok
+    Let $h(n) = 3 O(n) - n$. The step relation is $h(n+1) = h(n) + 3(D_n(7) \pmod 2) - 1$.
+    \begin{itemize}
+      \item ($\Rightarrow$) Suppose Conjecture 1 holds. We show $h(n) \ge 0$ by induction. $h(0)=0$. For the step, if $h(n+1) < 0$, then since $h(n) \ge 0$, we must have $h(n) = 0$ and $D_n(7)$ even. $h(n) = 3 O(n) - n = 0$ implies $3 \mid n$ and $O(n) = n/3$. These conditions, along with $D_n(7) \ge 5$, contradict Conjecture 1.
+      \item ($\Leftarrow$) If $h(n) \ge 0$ for all $n$, then for any $m$ with $3 \mid m$ and $O(m) = m/3$, we have $h(m) = 0$. If $D_m(7)$ were even, then $h(m+1) = 0 + 3(0) - 1 = -1$, contradicting $h(n) \ge 0$.
+    \end{itemize}
+  \end{proof}
+\end{lemma}
+
+\begin{theorem}
+  \label{thm:Conj1_iff_K37_in_M_1_3}
+  \lean{Conj1_iff_K37_in_M_1_3}
+  \leanok
+  Conjecture 1 is equivalent to $K_3(7) \in \mathcal{M}_{1/3}$.
+  \begin{proof}
+    \leanok
+    By Lemma~\ref{lemma:Diter_eq_real_formula}, the parity sequence $D_i(7) \pmod 2$ is identical to $\lfloor K_3(7) (3/2)^i \rfloor \pmod 2$.
+    The result then follows directly from Lemma~\ref{lemma:Conj1_iff_deficit_nonnegative} and the definition of $\mathcal{M}_{1/3}$.
+  \end{proof}
+\end{theorem}
+
+\begin{lemma}
+  \label{lemma:eight_fifths_in_M_1_3}
+  \lean{eight_fifths_in_M_1_3}
+  \leanok
+  The value $8/5$ is a member of the generalized Mahler set $\mathcal{M}_{1/3}$.
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:M_1_3_co_null}
+  \lean{M_1_3_co_null}
+  \leanok
+  The generalized Mahler set $\mathcal{M}_{1/3}$ is co-null in $(0, \infty)$, meaning its complement has Lebesgue measure zero.
+\end{lemma}
+
+\begin{theorem}
+  \label{thm:not_in_mahler_implies_not_Conj1}
+  \lean{not_in_mahler_implies_not_Conj1}
+  \leanok
+  If $K_3(7)$ is not a member of the generalized Mahler set $\mathcal{M}_{1/3}$, then Conjecture 1 is false.
+  \begin{proof}
+    \leanok
+    This is the contrapositive of Theorem~\ref{thm:Conj1_iff_K37_in_M_1_3}.
+  \end{proof}
+\end{theorem}
