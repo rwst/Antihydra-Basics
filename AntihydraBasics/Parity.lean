@@ -119,33 +119,3 @@ lemma mul3_order_ZMod_pow2 (N : ℕ) (hN : N ≥ 3) :
 lemma D_parity (n : ℕ) : D n % 2 = n / 2 % 2 := by
   rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk <;> simp [D] <;> omega
 
-/-- The map D(x) = ⌈3x/2⌉ modulo 2^N cannot be represented as a finite state machine
-    on ZMod (2^N), because D(x + c * 2^N) is not necessarily congruent to D(x) modulo 2^N.
-    Specifically, the "carry" from the division by 2 introduces dependence on higher bits. -/
-lemma D_not_well_defined_mod_pow2 (N : ℕ) (hN : N ≥ 1) :
-    ¬ ∀ x c : ℕ, D (x + c * 2 ^ N) % 2 ^ N = D x % 2 ^ N := by
-  intro h
-  have h1 := h 0 1
-  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : N ≠ 0)
-  have he : Even (2 ^ (k + 1)) := ⟨2 ^ k, by ring⟩
-  have hD2 : D (2 ^ (k + 1)) = 3 * 2 ^ k := by
-    rw [D_even he]
-    omega
-  have hD0 : D 0 = 0 := rfl
-  have heq : 0 + 1 * 2 ^ (k + 1) = 2 ^ (k + 1) := by ring
-  rw [heq, hD2, hD0] at h1
-  have hp : 2 ^ (k + 1) = 2 * 2 ^ k := by ring
-  rw [hp] at h1
-  have hm : 3 * 2 ^ k = 2 * 2 ^ k + 2 ^ k := by ring
-  rw [hm] at h1
-  generalize hK : 2 ^ k = K at h1
-  have hpos : K > 0 := by
-    rw [← hK]
-    exact Nat.two_pow_pos k
-  have hmod : (2 * K + K) % (2 * K) = K := by
-    rw [Nat.add_mod, Nat.mod_self, zero_add]
-    have : K % (2 * K) = K := Nat.mod_eq_of_lt (by omega)
-    rw [this]
-    exact Nat.mod_eq_of_lt (by omega)
-  rw [hmod, Nat.zero_mod] at h1
-  omega

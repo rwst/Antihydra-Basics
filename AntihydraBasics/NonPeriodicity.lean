@@ -187,7 +187,7 @@ lemma Diter_add (a b n : ℕ) : Diter (a + b) n = Diter a (Diter b n) :=
     Proof: choose precision P = N + L. Among the first 2^P + 1 orbit values,
     pigeonhole gives i < j with Diter i m ≡ Diter j m mod 2^P. Set T = j - i,
     M = i. Then Diter_mod_determined gives mod 2^N agreement for P - N = L steps. -/
-lemma Diter_mod_periodic_finite_stretch {m : ℕ} (hm : m ≥ 1) (N L : ℕ) :
+lemma Diter_mod_periodic_finite_stretch {m : ℕ} (N L : ℕ) :
     ∃ T > 0, ∃ M, ∀ n ≤ L,
       Diter (M + n + T) m % 2 ^ N = Diter (M + n) m % 2 ^ N := by
   let P := N + L
@@ -230,7 +230,7 @@ lemma Diter_mod_periodic_finite_stretch {m : ℕ} (hm : m ≥ 1) (N L : ℕ) :
     This shows that pigeonhole-derived periodicity is inherently self-limiting:
     each period consumes T bits of the initial precision surplus, and when the
     surplus is exhausted, periodicity fails. -/
-lemma Diter_mod_agreement_degrades {m : ℕ} (hm : m ≥ 1) (N L T M : ℕ) (hT : T ≥ 1)
+lemma Diter_mod_agreement_degrades {m : ℕ} (N L T M : ℕ) (hT : T ≥ 1)
     (h_agree : Diter M m % 2 ^ (N + L) = Diter (M + T) m % 2 ^ (N + L))
     (h_exact : Diter M m % 2 ^ (N + L + 1) ≠ Diter (M + T) m % 2 ^ (N + L + 1))
     (j : ℕ) (hj : j * T > L) (hjN : (j + 1) * T ≤ N + L) :
@@ -402,3 +402,34 @@ lemma parity_not_eventually_periodic :
 lemma not_Diter_mod_eventually_periodic (N : ℕ) (hN : N ≥ 1) :
     ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 ^ N = Diter k 7 % 2 ^ N :=
   not_Diter_mod_eventually_periodic_of (by decide) N hN
+
+/-- The map D(x) = ⌈3x/2⌉ modulo 2^N cannot be represented as a finite state machine
+    on ZMod (2^N), because D(x + c * 2^N) is not necessarily congruent to D(x) modulo 2^N.
+    Specifically, the "carry" from the division by 2 introduces dependence on higher bits. -/
+lemma D_not_well_defined_mod_pow2 (N : ℕ) (hN : N ≥ 1) :
+    ¬ ∀ x c : ℕ, D (x + c * 2 ^ N) % 2 ^ N = D x % 2 ^ N := by
+  intro h
+  have h1 := h 0 1
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : N ≠ 0)
+  have he : Even (2 ^ (k + 1)) := ⟨2 ^ k, by ring⟩
+  have hD2 : D (2 ^ (k + 1)) = 3 * 2 ^ k := by
+    rw [D_even he]
+    omega
+  have hD0 : D 0 = 0 := rfl
+  have heq : 0 + 1 * 2 ^ (k + 1) = 2 ^ (k + 1) := by ring
+  rw [heq, hD2, hD0] at h1
+  have hp : 2 ^ (k + 1) = 2 * 2 ^ k := by ring
+  rw [hp] at h1
+  have hm : 3 * 2 ^ k = 2 * 2 ^ k + 2 ^ k := by ring
+  rw [hm] at h1
+  generalize hK : 2 ^ k = K at h1
+  have hpos : K > 0 := by
+    rw [← hK]
+    exact Nat.two_pow_pos k
+  have hmod : (2 * K + K) % (2 * K) = K := by
+    rw [Nat.add_mod, Nat.mod_self, zero_add]
+    have : K % (2 * K) = K := Nat.mod_eq_of_lt (by omega)
+    rw [this]
+    exact Nat.mod_eq_of_lt (by omega)
+  rw [hmod, Nat.zero_mod] at h1
+  omega
