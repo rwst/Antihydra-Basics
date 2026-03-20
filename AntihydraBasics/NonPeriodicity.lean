@@ -199,27 +199,27 @@ lemma Diter_mod_periodic_finite_stretch {m : ℕ} (hm : m ≥ 1) (N L : ℕ) :
     · exact (hneq heq2).elim
     · exact ⟨j, i, hgt, heq.symm⟩
   obtain ⟨i, j, h_lt, h_eq⟩ := h_pigeon
-  have h_eq_val : Diter i.val 7 % 2^P = Diter j.val 7 % 2^P := by
+  have h_eq_val : Diter i.val m % 2^P = Diter j.val m % 2^P := by
     have : (f i).val = (f j).val := by rw [h_eq]
     exact this
   use j.val - i.val
   constructor
   · exact Nat.sub_pos_of_lt h_lt
   use i.val
-  intro m hm
-  have eq_1 : Diter (i.val + m + (j.val - i.val)) 7 = Diter m (Diter j.val 7) := by
-    have : i.val + m + (j.val - i.val) = m + j.val := by omega
+  intro n hn
+  have eq_1 : Diter (i.val + n + (j.val - i.val)) m = Diter n (Diter j.val m) := by
+    have : i.val + n + (j.val - i.val) = n + j.val := by omega
     rw [this, Diter_add]
-  have eq_2 : Diter (i.val + m) 7 = Diter m (Diter i.val 7) := by
-    have : i.val + m = m + i.val := by omega
+  have eq_2 : Diter (i.val + n) m = Diter n (Diter i.val m) := by
+    have : i.val + n = n + i.val := by omega
     rw [this, Diter_add]
   rw [eq_1, eq_2]
-  have h_eq_mod_Nm : Diter j.val 7 % 2^(N+m) = Diter i.val 7 % 2^(N+m) := by
-    have hdvd : 2^(N+m) ∣ 2^P := by
+  have h_eq_mod_Nm : Diter j.val m % 2^(N+n) = Diter i.val m % 2^(N+n) := by
+    have hdvd : 2^(N+n) ∣ 2^P := by
       apply Nat.pow_dvd_pow
       omega
     exact mod_eq_of_mod_eq_of_dvd hdvd h_eq_val.symm
-  exact Diter_mod_determined N m _ _ h_eq_mod_Nm
+  exact Diter_mod_determined N n _ _ h_eq_mod_Nm
 
 /-- The 2-adic expansion property limits how long finite-stretch periodicity lasts.
     If the orbit has a collision at mod 2^(N+L) precision (but not mod 2^(N+L+1)),
@@ -230,17 +230,17 @@ lemma Diter_mod_periodic_finite_stretch {m : ℕ} (hm : m ≥ 1) (N L : ℕ) :
     This shows that pigeonhole-derived periodicity is inherently self-limiting:
     each period consumes T bits of the initial precision surplus, and when the
     surplus is exhausted, periodicity fails. -/
-lemma Diter_mod_agreement_degrades (N L T M : ℕ) (hT : T ≥ 1)
-    (h_agree : Diter M 7 % 2 ^ (N + L) = Diter (M + T) 7 % 2 ^ (N + L))
-    (h_exact : Diter M 7 % 2 ^ (N + L + 1) ≠ Diter (M + T) 7 % 2 ^ (N + L + 1))
+lemma Diter_mod_agreement_degrades {m : ℕ} (hm : m ≥ 1) (N L T M : ℕ) (hT : T ≥ 1)
+    (h_agree : Diter M m % 2 ^ (N + L) = Diter (M + T) m % 2 ^ (N + L))
+    (h_exact : Diter M m % 2 ^ (N + L + 1) ≠ Diter (M + T) m % 2 ^ (N + L + 1))
     (j : ℕ) (hj : j * T > L) (hjN : (j + 1) * T ≤ N + L) :
-    Diter (M + j * T) 7 % 2 ^ N ≠ Diter (M + (j + 1) * T) 7 % 2 ^ N := by
-  set a := Diter M 7
-  set b := Diter (M + T) 7
-  have eq_1 : Diter (M + j * T) 7 = Diter (j * T) a := by
+    Diter (M + j * T) m % 2 ^ N ≠ Diter (M + (j + 1) * T) m % 2 ^ N := by
+  set a := Diter M m
+  set b := Diter (M + T) m
+  have eq_1 : Diter (M + j * T) m = Diter (j * T) a := by
     have : M + j * T = j * T + M := by omega
     rw [this, Diter_add]
-  have eq_2 : Diter (M + (j + 1) * T) 7 = Diter (j * T) b := by
+  have eq_2 : Diter (M + (j + 1) * T) m = Diter (j * T) b := by
     have : M + (j + 1) * T = j * T + (M + T) := by
       have : (j + 1) * T = j * T + T := by rw [Nat.add_mul, Nat.one_mul]
       omega
@@ -313,30 +313,31 @@ lemma mod_eq_of_le_pow (a b m n : ℕ) (h : a % 2 ^ n = b % 2 ^ n) (hmn : m ≤ 
   Nat.ModEq.of_dvd (Nat.pow_dvd_pow 2 hmn) h
 
 /-- **No collision is self-reinforcing.**
-    For any candidate period T ≥ 1 and modulus 2^N with N ≥ 1, the orbit of 7
+    For any candidate period T ≥ 1 and modulus 2^N with N ≥ 1, the orbit of m ≥ 1
     eventually disagrees at distance T. Equivalently, no period T can sustain
     mod 2^N agreement forever.
 
     Proof sketch (does NOT require K(3,7) irrationality):
-    1. By `Diter_7_injective`, Diter M 7 ≠ Diter (M+T) 7 for T ≥ 1.
+    1. By `Diter_injective`, Diter M m ≠ Diter (M+T) m for T ≥ 1.
     2. Since they are distinct naturals, their 2-adic agreement is finite:
-       ∃ M', Diter M 7 ≡ Diter (M+T) 7 mod 2^M' but ≢ mod 2^(M'+1).
+       ∃ M', Diter M m ≡ Diter (M+T) m mod 2^M' but ≢ mod 2^(M'+1).
     3. By `Diter_mod_exact`, each period of T steps degrades the agreement
        by exactly T bits (the 2-adic expansion property).
     4. After ⌈(M'−N+1)/T⌉ periods, the agreement drops below N bits,
        giving mod 2^N disagreement.
 
-    This lemma implies both `parity_not_eventually_periodic` and
-    `not_Diter_mod_eventually_periodic` without any irrationality assumption. -/
-lemma Diter_no_self_reinforcing_collision (N T : ℕ) (hN : N ≥ 1) (hT : T ≥ 1) (M : ℕ) :
-    ∃ k ≥ M, Diter k 7 % 2 ^ N ≠ Diter (k + T) 7 % 2 ^ N := by
+    This lemma implies both `parity_not_eventually_periodic_of` and
+    `not_Diter_mod_eventually_periodic_of` without any irrationality assumption. -/
+lemma Diter_no_self_reinforcing_collision {m : ℕ} (hm : m ≥ 1)
+    (N T : ℕ) (hN : N ≥ 1) (hT : T ≥ 1) (M : ℕ) :
+    ∃ k ≥ M, Diter k m % 2 ^ N ≠ Diter (k + T) m % 2 ^ N := by
   by_contra h_all
   push_neg at h_all
-  set a := Diter M 7
-  set b := Diter (M + T) 7
+  set a := Diter M m
+  set b := Diter (M + T) m
   have h_neq : a ≠ b := by
     intro h_eq
-    have h_inj := Diter_7_injective h_eq
+    have h_inj := Diter_injective hm h_eq
     omega
   obtain ⟨P, h_agree, h_exact⟩ := exists_exact_mod_pow_two_agreement h_neq
   have h_P_ge : P ≥ N := by
@@ -344,7 +345,7 @@ lemma Diter_no_self_reinforcing_collision (N T : ℕ) (hN : N ≥ 1) (hT : T ≥
     push_neg at h_lt
     have h_P1_le : P + 1 ≤ N := by omega
     have h_agree_N := h_all M (by omega)
-    have h_agree_P1 : Diter M 7 % 2 ^ (P + 1) = Diter (M + T) 7 % 2 ^ (P + 1) :=
+    have h_agree_P1 : Diter M m % 2 ^ (P + 1) = Diter (M + T) m % 2 ^ (P + 1) :=
       mod_eq_of_le_pow _ _ _ _ h_agree_N h_P1_le
     exact h_exact h_agree_P1
   obtain ⟨k, hk⟩ : ∃ k, k = P - N + 1 := ⟨P - N + 1, rfl⟩
@@ -361,33 +362,43 @@ lemma Diter_no_self_reinforcing_collision (N T : ℕ) (hN : N ≥ 1) (hT : T ≥
   have h_disagree : Diter k a % 2 ^ (N' + 1) ≠ Diter k b % 2 ^ (N' + 1) := h_exact_k.2
   have h_N_prime_eq : N' + 1 = N := by omega
   rw [h_N_prime_eq] at h_disagree
-  have h_Diter_a : Diter k a = Diter (M + k) 7 := by
+  have h_Diter_a : Diter k a = Diter (M + k) m := by
     have : M + k = k + M := by omega
     rw [this, Diter_add]
-  have h_Diter_b : Diter k b = Diter (M + k + T) 7 := by
+  have h_Diter_b : Diter k b = Diter (M + k + T) m := by
     have : M + k + T = k + (M + T) := by omega
     rw [this, Diter_add]
   rw [h_Diter_a, h_Diter_b] at h_disagree
-  have h_all_k : Diter (M + k) 7 % 2 ^ N = Diter (M + k + T) 7 % 2 ^ N := h_all (M + k) (by omega)
+  have h_all_k : Diter (M + k) m % 2 ^ N = Diter (M + k + T) m % 2 ^ N := h_all (M + k) (by omega)
   exact h_disagree h_all_k
 
-/-- The parity sequence of Diter is fundamentally not eventually periodic.
+/-- The parity sequence of Diter starting from any m ≥ 1 is fundamentally not eventually periodic.
     This is equivalent to the irrationality of the Odlyzko-Wilf constant K(3). -/
-lemma parity_not_eventually_periodic :
-    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 = Diter k 7 % 2 := by
+lemma parity_not_eventually_periodic_of {m : ℕ} (hm : m ≥ 1) :
+    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) m % 2 = Diter k m % 2 := by
   rintro ⟨T, hT, M, h_all⟩
-  have h_col := Diter_no_self_reinforcing_collision 1 T (by decide) hT M
+  have h_col := Diter_no_self_reinforcing_collision hm 1 T (by decide) hT M
   obtain ⟨k, hk_ge, hk_neq⟩ := h_col
   have h_eq := h_all k hk_ge
   rw [pow_one] at hk_neq
   exact hk_neq h_eq.symm
 
-/-- Generalizes the parity non-periodicity: the sequence `Diter k 7` modulo `2^N`
-    is never eventually periodic for any `N ≥ 1`. -/
-lemma not_Diter_mod_eventually_periodic (N : ℕ) (hN : N ≥ 1) :
-    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 ^ N = Diter k 7 % 2 ^ N := by
+/-- The sequence `Diter k m` modulo `2^N` is never eventually periodic
+    for any `m ≥ 1` and `N ≥ 1`. -/
+lemma not_Diter_mod_eventually_periodic_of {m : ℕ} (hm : m ≥ 1) (N : ℕ) (hN : N ≥ 1) :
+    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) m % 2 ^ N = Diter k m % 2 ^ N := by
   rintro ⟨T, hT, M, h_all⟩
-  have h_col := Diter_no_self_reinforcing_collision N T hN hT M
+  have h_col := Diter_no_self_reinforcing_collision hm N T hN hT M
   obtain ⟨k, hk_ge, hk_neq⟩ := h_col
   have h_eq := h_all k hk_ge
   exact hk_neq h_eq.symm
+
+/-- The parity sequence of Diter starting from 7 is not eventually periodic. -/
+lemma parity_not_eventually_periodic :
+    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 = Diter k 7 % 2 :=
+  parity_not_eventually_periodic_of (by decide)
+
+/-- The sequence `Diter k 7` modulo `2^N` is never eventually periodic for any `N ≥ 1`. -/
+lemma not_Diter_mod_eventually_periodic (N : ℕ) (hN : N ≥ 1) :
+    ¬ ∃ T > 0, ∃ M, ∀ k ≥ M, Diter (k + T) 7 % 2 ^ N = Diter k 7 % 2 ^ N :=
+  not_Diter_mod_eventually_periodic_of (by decide) N hN
