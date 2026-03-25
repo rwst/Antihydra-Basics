@@ -17,30 +17,19 @@
     <node id="n0">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="41.0" width="95.0" x="1660.0" y="-523.1337301587301"/>
+          <y:Geometry height="71.0" width="133.9999999999999" x="536.0654296875" y="-91.0"/>
           <y:Fill color="#00CCFF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.138671875" x="-0.5693359375" xml:space="preserve" y="4.4375">Antihydra Halting
-Problem<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="114.77734375" x="9.611328125" xml:space="preserve" y="12.40625">The constants K(3,n)
+can be expressed in
+terms of K(3)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
     <node id="n1">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="71.0" width="133.9999999999999" x="391.00000000000006" y="-538.5392857142857"/>
-          <y:Fill color="#00CCFF" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="114.77734375" x="9.611328124999943" xml:space="preserve" y="12.40625">The constants K(3,n)
-can be expressed in
-terms of K(3)<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-        </y:GenericNode>
-      </data>
-    </node>
-    <node id="n2">
-      <data key="d6">
-        <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="65.0" width="216.0" x="103.0" y="-535.5392857142857"/>
+          <y:Geometry height="65.0" width="216.0" x="248.0654296875" y="-179.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="194.31130981445312" x="10.844345092773438" xml:space="preserve" y="9.40625">For all starting values n
@@ -49,10 +38,10 @@ such that D(n,m) = ⌊K(3,n) (3/2)^m ⌋<y:LabelModel><y:SmartNodeLabelModel dis
         </y:GenericNode>
       </data>
     </node>
-    <node id="n3">
+    <node id="n2">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="51.0" width="216.0" x="350.0" y="-689.7892857142857"/>
+          <y:Geometry height="51.0" width="216.0" x="495.0654296875" y="-172.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="194.54568481445312" x="10.727157592773438" xml:space="preserve" y="9.4375">There exists a constant K(3,7)
@@ -60,16 +49,16 @@ such that D(7,m) = ⌊K(3,7) (3/2)^m ⌋<y:LabelModel><y:SmartNodeLabelModel dis
         </y:GenericNode>
       </data>
     </node>
-    <node id="n4" yfiles.foldertype="group">
+    <node id="n3" yfiles.foldertype="group">
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="274.0781746031746" width="389.4999999999999" x="588.5" y="-700.8674603174603"/>
+              <y:Geometry height="203.0781746031746" width="884.5" x="506.5654296875" y="-405.0781746031746"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="389.4999999999999" x="0.0" xml:space="preserve" y="0.0">K(3,n) irrationality</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="884.5" x="0.0" xml:space="preserve" y="0.0">K(3,n) irrationality</y:NodeLabel>
               <y:Shape type="roundrectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
@@ -88,41 +77,42 @@ such that D(7,m) = ⌊K(3,7) (3/2)^m ⌋<y:LabelModel><y:SmartNodeLabelModel dis
           </y:Realizers>
         </y:ProxyAutoBoundsNode>
       </data>
-      <graph edgedefault="directed" id="n4:">
-        <node id="n4::n0">
+      <graph edgedefault="directed" id="n3:">
+        <node id="n3::n0">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="41.0" width="110.99999999999989" x="852.0" y="-565.7892857142857"/>
+              <y:Geometry height="41.0" width="110.99999999999989" x="758.0654296875" y="-339.3333333333333"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="98.06640625" x="6.466796875" xml:space="preserve" y="11.46875">K(3,7) is irrational<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
             </y:GenericNode>
           </data>
         </node>
-        <node id="n4::n1">
+        <node id="n3::n1">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="41.0" width="148.9999999999999" x="610.5" y="-482.7892857142857"/>
+              <y:Geometry height="41.0" width="148.9999999999999" x="976.5654296874998" y="-353.0"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.904296875" x="10.0478515625" xml:space="preserve" y="11.46875">The K(3,n) are irrational<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="128.904296875" x="10.0478515625" xml:space="preserve" y="4.4375">The K(3,n) are irrational
+???<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
             </y:GenericNode>
           </data>
         </node>
-        <node id="n4::n2">
+        <node id="n3::n2">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="41.0" width="110.99999999999989" x="852.0" y="-482.7892857142857"/>
+              <y:Geometry height="41.0" width="110.99999999999989" x="1265.0654296875" y="-342.75"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.9609375" x="11.01953125" xml:space="preserve" y="11.46875">K(3) is irrational<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
             </y:GenericNode>
           </data>
         </node>
-        <node id="n4::n3">
+        <node id="n3::n3">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="65.0" width="163.0" x="603.5" y="-577.7892857142857"/>
+              <y:Geometry height="65.0" width="163.0" x="521.5654296875" y="-282.0"/>
               <y:Fill color="#FF9900" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="152.875" x="5.0625" xml:space="preserve" y="9.40625">If the digits never loop,
@@ -131,10 +121,10 @@ to be irrational.<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
             </y:GenericNode>
           </data>
         </node>
-        <node id="n4::n4">
+        <node id="n3::n4">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="41.0" width="110.99999999999989" x="629.5" y="-648.7892857142857"/>
+              <y:Geometry height="41.0" width="110.99999999999989" x="547.5654296875" y="-353.0"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="105.203125" x="2.8984375" xml:space="preserve" y="4.4375">The digits of K(3,7)
@@ -144,30 +134,30 @@ never loop<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
         </node>
       </graph>
     </node>
-    <node id="n5">
+    <node id="n4">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="31.0" width="83.0" x="0.0" y="-518.5392857142857"/>
+          <y:Geometry height="31.0" width="83.0" x="66.5" y="-123.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="70.46875" x="6.265625" xml:space="preserve" y="6.46875">Odlyzko-Wilf<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
-    <node id="n6" yfiles.foldertype="group">
+    <node id="n5" yfiles.foldertype="group">
       <data key="d4" xml:space="preserve"/>
       <data key="d6">
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="295.7892857142857" width="482.5" x="566.0" y="-295.7892857142857"/>
+              <y:Geometry height="396.7892857142857" width="491.0" x="932.0654296875" y="-932.8674603174602"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="482.5" x="0.0" xml:space="preserve" y="0.0">{ ξ(3/2)^m } with irrational ξ</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="491.0" x="0.0" xml:space="preserve" y="0.0">{ ξ(3/2)^m } with irrational ξ</y:NodeLabel>
               <y:Shape type="roundrectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="4.960317460245278E-5"/>
+              <y:BorderInsets bottom="0" bottomF="1.1368683772161603E-13" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="4.9603174488765944E-5"/>
             </y:GroupNode>
             <y:GroupNode>
               <y:Geometry height="50.0" width="50.0" x="0.0" y="60.0"/>
@@ -182,11 +172,11 @@ never loop<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
           </y:Realizers>
         </y:ProxyAutoBoundsNode>
       </data>
-      <graph edgedefault="directed" id="n6:">
-        <node id="n6::n0">
+      <graph edgedefault="directed" id="n5:">
+        <node id="n5::n0">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="81.0" width="208.0" x="581.0" y="-96.0"/>
+              <y:Geometry height="81.0" width="208.0" x="947.0654296875" y="-632.0781746031746"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="195.666015625" x="6.1669921875" xml:space="preserve" y="10.375">There are a finite number
@@ -196,10 +186,10 @@ of types of exceptions to
             </y:GenericNode>
           </data>
         </node>
-        <node id="n6::n1">
+        <node id="n5::n1">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="51.0" width="123.0" x="623.5" y="-259.2111111111111"/>
+              <y:Geometry height="51.0" width="123.0" x="989.5654296875" y="-795.2892857142857"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="103.515625" x="9.7421875" xml:space="preserve" y="9.4375">All K(3,n) belong
@@ -207,10 +197,10 @@ to "the exceptions"<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Labe
             </y:GenericNode>
           </data>
         </node>
-        <node id="n6::n2">
+        <node id="n5::n2">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="51.0" width="175.0" x="820.0" y="-252.8361111111111"/>
+              <y:Geometry height="51.0" width="175.0" x="1233.0654296875" y="-713.6837301587302"/>
               <y:Fill color="#00CCFF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="151.43359375" x="11.783203125" xml:space="preserve" y="9.4375">For all ξ=K(3,n), { ξ(3/2)^m }
@@ -218,21 +208,21 @@ is uniformly distributed<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
             </y:GenericNode>
           </data>
         </node>
-        <node id="n6::n3">
+        <node id="n5::n3">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="52.2109126984127" width="110.99999999999989" x="629.5" y="-178.2110119047619"/>
+              <y:Geometry height="52.2109126984127" width="110.99999999999989" x="995.5654296874998" y="-714.2891865079366"/>
               <y:Fill color="#FF9900" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="86.072265625" x="12.4638671875" xml:space="preserve" y="10.04295634920635">Flatto, Lagarias
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="86.072265625" x="12.4638671875" xml:space="preserve" y="10.042956349206406">Flatto, Lagarias
 &amp; Pollington<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
             </y:GenericNode>
           </data>
         </node>
-        <node id="n6::n4">
+        <node id="n5::n4">
           <data key="d6">
             <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="71.0" width="149.0" x="884.5" y="-120.28928571428571"/>
+              <y:Geometry height="71.0" width="149.0" x="976.5654296875" y="-896.2892857142857"/>
               <y:Fill color="#3366FF" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="131.9921875" x="8.50390625" xml:space="preserve" y="19.4375">Is { ξ(3/2)^m } uniformly
@@ -242,116 +232,44 @@ distributed?<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel>
         </node>
       </graph>
     </node>
+    <node id="n6">
+      <data key="d6">
+        <y:GenericNode configuration="BevelNode">
+          <y:Geometry height="52.2109126984127" width="110.99999999999989" x="758.0654296875" y="-598.2891865079366"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="90.080078125" x="10.4599609375" xml:space="preserve" y="10.042956349206406">D(m,n) mod 2^N
+is non-periodic<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
     <node id="n7">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="52.2109126984127" width="110.99999999999989" x="155.50000000000006" y="-440.5391865079365"/>
+          <y:Geometry height="33.66666834813043" width="83.0" x="561.5654296875" y="-589.0170643327954"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="90.080078125" x="10.459960937499943" xml:space="preserve" y="10.04295634920635">D(m,n) mod 2^N
-is non-periodic<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="53.23046875" x="14.884765625" xml:space="preserve" y="7.802084174065158">Dubickas<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
     <node id="n8">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="33.66666834813043" width="83.0" x="0.0" y="-431.26706433279537"/>
-          <y:Fill color="#FF9900" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="53.23046875" x="14.884765625" xml:space="preserve" y="7.8020841740652145">Dubickas<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-        </y:GenericNode>
-      </data>
-    </node>
-    <node id="n9" yfiles.foldertype="group">
-      <data key="d4" xml:space="preserve"/>
-      <data key="d5"/>
-      <data key="d6">
-        <y:ProxyAutoBoundsNode>
-          <y:Realizers active="0">
-            <y:GroupNode>
-              <y:Geometry height="375.5781746031746" width="198.0" x="1415.0" y="-760.2119047619047"/>
-              <y:Fill color="#F5F5F5" transparent="false"/>
-              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="198.0" x="0.0" xml:space="preserve" y="0.0">Parity Vector condition</y:NodeLabel>
-              <y:Shape type="roundrectangle"/>
-              <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
-              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="4.960317460245278E-5"/>
-            </y:GroupNode>
-            <y:GroupNode>
-              <y:Geometry height="50.0" width="50.0" x="0.0" y="60.0"/>
-              <y:Fill color="#F5F5F5" transparent="false"/>
-              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="58.140625" x="-4.0703125" xml:space="preserve" y="0.0">Folder 3</y:NodeLabel>
-              <y:Shape type="roundrectangle"/>
-              <y:State closed="true" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
-              <y:Insets bottom="5" bottomF="5.0" left="5" leftF="5.0" right="5" rightF="5.0" top="5" topF="5.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-            </y:GroupNode>
-          </y:Realizers>
-        </y:ProxyAutoBoundsNode>
-      </data>
-      <graph edgedefault="directed" id="n9:">
-        <node id="n9::n0">
-          <data key="d6">
-            <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="88.0" width="149.0" x="1439.5" y="-487.63373015873015"/>
-              <y:Fill color="#FF9900" transparent="false"/>
-              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.3125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="129.126953125" x="9.9365234375" xml:space="preserve" y="6.84375">Antihydra halts iff
-there exists a parity
-vector of the D(7) orbit
-of len n with the sum of
-parities == 2/3 n<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-            </y:GenericNode>
-          </data>
-        </node>
-        <node id="n9::n1">
-          <data key="d6">
-            <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="88.0" width="149.0" x="1439.5" y="-723.6337301587301"/>
-              <y:Fill color="#99CCFF" transparent="false"/>
-              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="129.126953125" x="9.9365234375" xml:space="preserve" y="13.875">There exists a parity
-vector of the D(7) orbit
-of len n with the sum of
-parities == 2/3 n<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-            </y:GenericNode>
-          </data>
-        </node>
-        <node id="n9::n2">
-          <data key="d6">
-            <y:GenericNode configuration="BevelNode">
-              <y:Geometry height="88.0" width="168.0" x="1430.0" y="-605.6337301587301"/>
-              <y:Fill color="#99CCFF" transparent="false"/>
-              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="154.744140625" x="6.6279296875" xml:space="preserve" y="13.875">There does not exist a parity
-vector of the D(7) orbit
-of len n with the sum of
-parities == 2/3 n<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-            </y:GenericNode>
-          </data>
-        </node>
-      </graph>
-    </node>
-    <node id="n10">
-      <data key="d6">
-        <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="58.230024213075126" width="123.0" x="1452.5" y="-354.63366290018837"/>
+          <y:Geometry height="58.230024213075126" width="123.0" x="1828.0654296875" y="-619.116202582728"/>
           <y:Fill color="#00CCFF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.138671875" x="13.4306640625" xml:space="preserve" y="6.021262106537563">Antihydra Halting
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.138671875" x="13.4306640625" xml:space="preserve" y="6.021262106537506">Antihydra Halting
 Problem is
 undecidable<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
-    <node id="n11">
+    <node id="n9">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="71.0" width="149.0" x="833.0" y="-396.7892857142857"/>
-          <y:Fill color="#00CCFF" transparent="false"/>
+          <y:Geometry height="71.0" width="149.0" x="1246.0654296875" y="-506.0781746031746"/>
+          <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="142.05859375" x="3.470703125" xml:space="preserve" y="12.40625">If { ξ(3/2)^m } is uniformly
 distributed, then D mod 2
@@ -359,11 +277,11 @@ is normal.<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y
         </y:GenericNode>
       </data>
     </node>
-    <node id="n12">
+    <node id="n10">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="71.0" width="149.0" x="1041.0" y="-359.0861111111111"/>
-          <y:Fill color="#00CCFF" transparent="false"/>
+          <y:Geometry height="71.0" width="149.0" x="1454.0654296875" y="-627.4337301587302"/>
+          <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="114.70703125" x="17.146484375" xml:space="preserve" y="12.40625">If D mod 2 is normal,
 it behaves like a seq.
@@ -371,10 +289,10 @@ of random variables<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:Labe
         </y:GenericNode>
       </data>
     </node>
-    <node id="n13">
+    <node id="n11">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="71.0" width="149.0" x="1228.0" y="-460.0861111111111"/>
+          <y:Geometry height="71.0" width="149.0" x="1641.0654296875" y="-526.4337301587302"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.138671875" x="8.4306640625" xml:space="preserve" y="5.375">If D mod 2 behaves like
@@ -384,10 +302,10 @@ Problem is undecidable.<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
         </y:GenericNode>
       </data>
     </node>
-    <node id="n14">
+    <node id="n12">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="50.5" width="163.0" x="1221.0" y="-336.2111111111111"/>
+          <y:Geometry height="50.5" width="163.0" x="1634.0654296875" y="-629.8087301587302"/>
           <y:Fill color="#00CCFF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.9296875" x="15.03515625" xml:space="preserve" y="9.1875">D mod 2 behaves like a
@@ -395,10 +313,10 @@ seq.of random variables<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:
         </y:GenericNode>
       </data>
     </node>
-    <node id="n15">
+    <node id="n13">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="71.0" width="149.0" x="1041.0" y="-460.0861111111111"/>
+          <y:Geometry height="71.0" width="149.0" x="1454.0654296875" y="-526.4337301587302"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.25" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="132.806640625" x="8.0966796875" xml:space="preserve" y="5.375">The probability of a
@@ -408,20 +326,20 @@ at 2 is &lt; 1.<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelMod
         </y:GenericNode>
       </data>
     </node>
-    <node id="n16">
+    <node id="n14">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="41.0" width="123.0" x="1054.0" y="-258.0861111111111"/>
+          <y:Geometry height="41.0" width="123.0" x="1467.0654296875" y="-698.4337301587302"/>
           <y:Fill color="#00CCFF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="101.27734375" x="10.861328125" xml:space="preserve" y="11.46875">D mod 2 is normal<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
-    <node id="n17">
+    <node id="n15">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="65.0" width="216.0" x="28.5" y="-677.0392857142857"/>
+          <y:Geometry height="65.0" width="216.0" x="0.0" y="-218.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="218.130859375" x="-1.0654296875" xml:space="preserve" y="9.40625">The parity of D(n) with D(0)=some value,
@@ -430,32 +348,99 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:GenericNode>
       </data>
     </node>
-    <node id="n18">
+    <node id="n16">
       <data key="d6">
         <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="51.0" width="175.0" x="1076.0" y="-159.3361111111111"/>
+          <y:Geometry height="81.0" width="134.0" x="746.5654296875" y="-516.0781746031746"/>
           <y:Fill color="#00CCFF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.8359375" x="12.08203125" xml:space="preserve" y="16.46875">Mahler's Z-number problem<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.3125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.900390625" x="12.5498046875" xml:space="preserve" y="3.34375">If D(m,n) mod 2^N
+is non-periodic then
+the digits of K(3,m)
+never loop
+???<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
-    <node id="n19">
+    <node id="n17" yfiles.foldertype="group">
+      <data key="d4" xml:space="preserve"/>
+      <data key="d5"/>
       <data key="d6">
-        <y:GenericNode configuration="BevelNode">
-          <y:Geometry height="51.0" width="175.0" x="1076.0" y="-87.83611111111111"/>
-          <y:Fill color="#00CCFF" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="101.640625" x="36.6796875" xml:space="preserve" y="16.46875">Collatz Conjecture<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
-        </y:GenericNode>
+        <y:ProxyAutoBoundsNode>
+          <y:Realizers active="0">
+            <y:GroupNode>
+              <y:Geometry height="254.57817460317472" width="875.138671875" x="1218.0654296875" y="-1217.445634920635"/>
+              <y:Fill color="#F5F5F5" transparent="false"/>
+              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="875.138671875" x="0.0" xml:space="preserve" y="0.0">Problems</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="4.960317460245278E-5"/>
+            </y:GroupNode>
+            <y:GroupNode>
+              <y:Geometry height="50.0" width="50.0" x="0.0" y="60.0"/>
+              <y:Fill color="#F5F5F5" transparent="false"/>
+              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.578125" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="58.140625" x="-4.0703125" xml:space="preserve" y="0.0">Folder 4</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="true" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="5" bottomF="5.0" left="5" leftF="5.0" right="5" rightF="5.0" top="5" topF="5.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+            </y:GroupNode>
+          </y:Realizers>
+        </y:ProxyAutoBoundsNode>
       </data>
+      <graph edgedefault="directed" id="n17:">
+        <node id="n17::n0">
+          <data key="d6">
+            <y:GenericNode configuration="BevelNode">
+              <y:Geometry height="41.0" width="95.0" x="1982.634765625" y="-1018.8674603174603"/>
+              <y:Fill color="#00CCFF" transparent="false"/>
+              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="32.125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.138671875" x="-0.5693359375" xml:space="preserve" y="4.4375">Antihydra Halting
+Problem<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+        <node id="n17::n1">
+          <data key="d6">
+            <y:GenericNode configuration="BevelNode">
+              <y:Geometry height="51.0" width="175.0" x="1233.0654296875" y="-1028.8674603174604"/>
+              <y:Fill color="#00CCFF" transparent="false"/>
+              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.8359375" x="12.08203125" xml:space="preserve" y="16.46875">Mahler's Z-number problem<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+        <node id="n17::n2">
+          <data key="d6">
+            <y:GenericNode configuration="BevelNode">
+              <y:Geometry height="51.0" width="175.0" x="1233.0654296875" y="-1180.8674603174604"/>
+              <y:Fill color="#00CCFF" transparent="false"/>
+              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="101.640625" x="36.6796875" xml:space="preserve" y="16.46875">Collatz Conjecture<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+        <node id="n17::n3">
+          <data key="d6">
+            <y:GenericNode configuration="BevelNode">
+              <y:Geometry height="41.0" width="134.0" x="1253.5654296875" y="-1099.8674603174604"/>
+              <y:Fill color="#00CCFF" transparent="false"/>
+              <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.0625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.982421875" x="18.5087890625" xml:space="preserve" y="11.46875">Waring's problem<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+            </y:GenericNode>
+          </data>
+        </node>
+      </graph>
     </node>
-    <edge id="e0" source="n9::n1" target="n0">
+    <edge id="e0" source="n2" target="n3::n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.5" sy="-0.0" tx="-47.5" ty="-15.375">
-            <y:Point x="1644.5" y="-679.6337301587301"/>
-            <y:Point x="1644.5" y="-518.0087301587301"/>
+          <y:Path sx="108.0" sy="-0.0" tx="-55.49999999999994" ty="13.666666666666668">
+            <y:Point x="726.5654296875" y="-146.5"/>
+            <y:Point x="726.5654296875" y="-305.16666666666663"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -463,12 +448,22 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e1" source="n9::n0" target="n0">
+    <edge id="e1" source="n1" target="n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.5" sy="-0.0" tx="-47.5" ty="5.125">
-            <y:Point x="1628.5" y="-443.63373015873015"/>
-            <y:Point x="1628.5" y="-497.50873015873015"/>
+          <y:Path sx="108.0" sy="-0.0" tx="-108.0" ty="-0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n3::e0" source="n3::n1" target="n3::n2">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="74.49999999999994" sy="13.666666666666671" tx="-55.49999999999994" ty="10.25">
+            <y:Point x="1141.0654296874998" y="-318.8333333333333"/>
+            <y:Point x="1141.0654296874998" y="-312.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -476,12 +471,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e2" source="n3" target="n4::n0">
+    <edge id="n3::e1" source="n3::n1" target="n3::n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="108.0" sy="-0.0" tx="-55.5" ty="-16.399999999999977">
-            <y:Point x="798.0" y="-664.2892857142857"/>
-            <y:Point x="798.0" y="-561.6892857142857"/>
+          <y:Path sx="-74.49999999999994" sy="10.25" tx="55.49999999999994" ty="10.25">
+            <y:Point x="884.5654296875" y="-322.25"/>
+            <y:Point x="884.5654296875" y="-308.5833333333333"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -489,12 +484,34 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e3" source="n2" target="n3">
+    <edge id="n3::e2" source="n3::n0" target="n3::n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="108.0" sy="-21.666666666666664" tx="-108.0" ty="-0.0">
-            <y:Point x="334.5" y="-524.7059523809523"/>
-            <y:Point x="334.5" y="-664.2892857142857"/>
+          <y:Path sx="55.49999999999994" sy="-10.25" tx="-74.49999999999994" ty="3.4166666666666643"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n3::e3" source="n3::n2" target="n3::n1">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="-55.49999999999994" sy="-10.25" tx="74.49999999999994" ty="-0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="n0" target="n3::n1">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="67.0" sy="-0.0" tx="-74.5" ty="17.083333333333314">
+            <y:Point x="742.5654296875" y="-55.5"/>
+            <y:Point x="742.5654296875" y="-282.8333333333333"/>
+            <y:Point x="900.5654296875" y="-282.8333333333333"/>
+            <y:Point x="900.5654296875" y="-315.4166666666667"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -502,12 +519,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n4::e0" source="n4::n1" target="n4::n2">
+    <edge id="n5::e0" source="n5::n0" target="n5::n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.49999999999994" sy="8.2" tx="-55.49999999999994" ty="10.25">
-            <y:Point x="820.5" y="-454.0892857142857"/>
-            <y:Point x="820.5" y="-452.0392857142857"/>
+          <y:Path sx="104.0" sy="-0.0" tx="-87.5" ty="10.200000000000001">
+            <y:Point x="1170.5654296875" y="-591.5781746031746"/>
+            <y:Point x="1170.5654296875" y="-677.9837301587302"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -515,12 +532,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n4::e1" source="n4::n1" target="n4::n0">
+    <edge id="n5::e1" source="n5::n1" target="n5::n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.49999999999994" sy="-8.200000000000001" tx="-55.49999999999994" ty="16.4">
-            <y:Point x="798.0" y="-470.4892857142857"/>
-            <y:Point x="798.0" y="-528.8892857142857"/>
+          <y:Path sx="61.5" sy="-0.0" tx="-87.5" ty="-10.200000000000003">
+            <y:Point x="1128.0654296875" y="-769.7892857142857"/>
+            <y:Point x="1128.0654296875" y="-698.3837301587303"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -528,12 +545,32 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n4::e2" source="n4::n0" target="n4::n1">
+    <edge id="n3::e4" source="n3::n4" target="n3::n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-55.49999999999994" sy="8.200000000000001" tx="74.49999999999994" ty="-16.4">
-            <y:Point x="782.0" y="-537.0892857142857"/>
-            <y:Point x="782.0" y="-478.6892857142857"/>
+          <y:Path sx="55.49999999999994" sy="-0.0" tx="-55.49999999999994" ty="-13.666666666666671"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n5::e2" source="n5::n3" target="n5::n2">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="55.49999999999994" sy="-0.0" tx="-87.5" ty="-0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e3" source="n4" target="n1">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="41.5" sy="-0.0" tx="-108.0" ty="16.25">
+            <y:Point x="231.5" y="-107.5"/>
+            <y:Point x="231.5" y="-130.25"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -541,12 +578,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n4::e3" source="n4::n2" target="n4::n1">
+    <edge id="n3::e5" source="n3::n3" target="n3::n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-55.49999999999994" sy="-10.25" tx="74.49999999999994" ty="-0.0">
-            <y:Point x="814.0" y="-472.5392857142857"/>
-            <y:Point x="814.0" y="-462.2892857142857"/>
+          <y:Path sx="81.5" sy="-0.0" tx="-55.49999999999994" ty="-0.0">
+            <y:Point x="700.0654296875" y="-249.5"/>
+            <y:Point x="700.0654296875" y="-318.8333333333333"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -554,12 +591,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e4" source="n1" target="n4::n1">
+    <edge id="e4" source="n3::n1" target="n5::n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="66.99999999999994" sy="-0.0" tx="-74.49999999999994" ty="-10.25">
-            <y:Point x="540.5" y="-503.0392857142857"/>
-            <y:Point x="540.5" y="-472.5392857142857"/>
+          <y:Path sx="74.49999999999994" sy="-13.666666666666668" tx="-87.5" ty="20.4">
+            <y:Point x="1186.5654296875" y="-346.1666666666667"/>
+            <y:Point x="1186.5654296875" y="-667.7837301587302"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -567,103 +604,7 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n6::e0" source="n6::n0" target="n6::n2">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="104.0" sy="-0.0" tx="-87.5" ty="19.125">
-            <y:Point x="804.5" y="-55.5"/>
-            <y:Point x="804.5" y="-208.2111111111111"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="n6::e1" source="n6::n1" target="n6::n2">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="61.5" sy="-0.0" tx="-87.5" ty="-6.375"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e5" source="n9::n2" target="n0">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="84.0" sy="-0.0" tx="-47.5" ty="-5.125">
-            <y:Point x="1628.5" y="-561.6337301587301"/>
-            <y:Point x="1628.5" y="-507.75873015873015"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="n4::e4" source="n4::n4" target="n4::n0">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="55.49999999999994" sy="-0.0" tx="-55.49999999999994" ty="-8.2">
-            <y:Point x="782.0" y="-628.2892857142857"/>
-            <y:Point x="782.0" y="-553.4892857142858"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="n6::e2" source="n6::n3" target="n6::n2">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="55.49999999999994" sy="-0.0" tx="-87.5" ty="6.375">
-            <y:Point x="762.0" y="-152.10555555555555"/>
-            <y:Point x="762.0" y="-220.9611111111111"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e6" source="n5" target="n2">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="41.5" sy="-0.0" tx="-108.0" ty="-0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="n4::e5" source="n4::n3" target="n4::n0">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="81.5" sy="-0.0" tx="-55.49999999999994" ty="-0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e7" source="n4::n1" target="n6::n2">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="74.49999999999994" sy="16.4" tx="-87.5" ty="-19.125">
-            <y:Point x="804.5" y="-445.88928571428573"/>
-            <y:Point x="804.5" y="-246.4611111111111"/>
-          </y:Path>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e8" source="n8" target="n7">
-      <data key="d9"/>
+    <edge id="e5" source="n7" target="n6">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="41.5" sy="-0.0" tx="-55.49999999999994" ty="-0.0"/>
@@ -673,24 +614,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e9" source="n2" target="n1">
-      <data key="d9"/>
+    <edge id="e6" source="n1" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="108.0" sy="-0.0" tx="-66.99999999999994" ty="-0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e10" source="n2" target="n4::n1">
-      <data key="d9"/>
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="108.0" sy="21.666666666666686" tx="-74.5" ty="10.25">
-            <y:Point x="334.5" y="-481.372619047619"/>
-            <y:Point x="334.5" y="-452.0392857142857"/>
+          <y:Path sx="108.0" sy="21.666666666666664" tx="-66.99999999999994" ty="-0.0">
+            <y:Point x="479.5654296875" y="-124.83333333333334"/>
+            <y:Point x="479.5654296875" y="-55.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -698,13 +627,14 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e11" source="n10" target="n0">
-      <data key="d9"/>
+    <edge id="e7" source="n1" target="n3::n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="61.5" sy="-0.0" tx="-47.5" ty="15.375">
-            <y:Point x="1644.5" y="-325.5186507936508"/>
-            <y:Point x="1644.5" y="-487.25873015873015"/>
+          <y:Path sx="108.0" sy="-21.666666666666657" tx="-74.5" ty="-3.4166666666666856">
+            <y:Point x="479.5654296875" y="-168.16666666666666"/>
+            <y:Point x="479.5654296875" y="-368.5"/>
+            <y:Point x="884.5654296874999" y="-368.5"/>
+            <y:Point x="884.5654296874999" y="-335.9166666666667"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -712,13 +642,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e12" source="n13" target="n10">
-      <data key="d9"/>
+    <edge id="e8" source="n8" target="n17::n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.5" sy="-0.0" tx="-61.5" ty="-14.557506053268781">
-            <y:Point x="1399.5" y="-424.5861111111111"/>
-            <y:Point x="1399.5" y="-340.0761568469196"/>
+          <y:Path sx="61.5" sy="-0.0" tx="-47.5" ty="-0.0">
+            <y:Point x="1966.5654296875" y="-590.0011904761905"/>
+            <y:Point x="1966.5654296875" y="-998.3674603174603"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -726,30 +655,40 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e13" source="n14" target="n10">
-      <data key="d9"/>
+    <edge id="e9" source="n11" target="n8">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="81.5" sy="-0.0" tx="-61.5" ty="14.557506053268781"/>
+          <y:Path sx="74.5" sy="-0.0" tx="-61.5" ty="14.557506053268781">
+            <y:Point x="1812.5654296875" y="-490.93373015873016"/>
+            <y:Point x="1812.5654296875" y="-575.4436844229217"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e14" source="n12" target="n14">
-      <data key="d9"/>
+    <edge id="e10" source="n12" target="n8">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.5" sy="-0.0" tx="-81.5" ty="-12.625"/>
+          <y:Path sx="81.5" sy="-0.0" tx="-61.5" ty="-14.557506053268781"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e15" source="n15" target="n13">
-      <data key="d9"/>
+    <edge id="e11" source="n10" target="n12">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="74.5" sy="-0.0" tx="-81.5" ty="12.625"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e12" source="n13" target="n11">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="74.5" sy="-0.0" tx="-74.5" ty="-0.0"/>
@@ -759,13 +698,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e16" source="n16" target="n14">
-      <data key="d9"/>
+    <edge id="e13" source="n14" target="n12">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="61.5" sy="-0.0" tx="-81.5" ty="12.625">
-            <y:Point x="1205.5" y="-237.5861111111111"/>
-            <y:Point x="1205.5" y="-298.3361111111111"/>
+          <y:Path sx="61.5" sy="-0.0" tx="-81.5" ty="-12.625">
+            <y:Point x="1618.5654296875" y="-677.9337301587302"/>
+            <y:Point x="1618.5654296875" y="-617.1837301587302"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -773,13 +711,12 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e17" source="n11" target="n16">
-      <data key="d9"/>
+    <edge id="e14" source="n9" target="n14">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="74.5" sy="-0.0" tx="-61.5" ty="-10.25">
-            <y:Point x="1025.5" y="-361.2892857142857"/>
-            <y:Point x="1025.5" y="-247.8361111111111"/>
+          <y:Path sx="74.5" sy="-0.0" tx="-61.5" ty="10.25">
+            <y:Point x="1438.5654296875" y="-470.5781746031746"/>
+            <y:Point x="1438.5654296875" y="-667.6837301587302"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -787,55 +724,104 @@ the Antihydra halting problem.<y:LabelModel><y:SmartNodeLabelModel distance="4.0
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e18" source="n6::n2" target="n16">
-      <data key="d9"/>
+    <edge id="e15" source="n5::n2" target="n14">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="87.5" sy="-0.0" tx="-61.5" ty="10.25"/>
+          <y:Path sx="87.5" sy="-0.0" tx="-61.5" ty="-10.25"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e19" source="n17" target="n2">
-      <data key="d9"/>
+    <edge id="e16" source="n15" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="108.0" sy="-0.0" tx="-108.0" ty="-16.25">
+            <y:Point x="232.5654296875" y="-185.5"/>
+            <y:Point x="232.5654296875" y="-162.75"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n6::e3" source="n6::n4" target="n6::n2">
-      <data key="d9"/>
+    <edge id="n5::e3" source="n5::n4" target="n5::n2">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="74.5" sy="26.625" tx="-87.5" ty="-20.400000000000006">
+            <y:Point x="1144.0654296875" y="-834.1642857142857"/>
+            <y:Point x="1144.0654296875" y="-708.5837301587302"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e20" source="n6::n4" target="n18">
-      <data key="d9"/>
+    <edge id="e17" source="n5::n4" target="n17::n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="74.5" sy="8.875" tx="-87.5" ty="-0.0">
+            <y:Point x="1202.5654296875" y="-851.9142857142857"/>
+            <y:Point x="1202.5654296875" y="-1003.3674603174603"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e21" source="n6::n4" target="n19">
+    <edge id="e18" source="n5::n4" target="n17::n2">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="74.5" sy="-26.625" tx="-87.5" ty="-0.0">
+            <y:Point x="1170.5654296875" y="-887.4142857142857"/>
+            <y:Point x="1170.5654296875" y="-1155.3674603174604"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e19" source="n5::n4" target="n17::n3">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="74.5" sy="-8.875" tx="-67.0" ty="-0.0">
+            <y:Point x="1186.5654296875" y="-869.6642857142857"/>
+            <y:Point x="1186.5654296875" y="-1079.3674603174604"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e20" source="n16" target="n3::n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="67.0" sy="-0.0" tx="-74.49999999999994" ty="-10.250000000000007">
+            <y:Point x="900.5654296874999" y="-475.5781746031746"/>
+            <y:Point x="900.5654296874999" y="-342.75"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e21" source="n6" target="n3::n1">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="55.49999999999994" sy="-0.0" tx="-74.49999999999994" ty="-17.083333333333343">
+            <y:Point x="916.5654296874999" y="-572.1837301587302"/>
+            <y:Point x="916.5654296874999" y="-349.58333333333337"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
